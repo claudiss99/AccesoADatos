@@ -8,12 +8,12 @@ package cajeroautomatico;
  *
  * @author Claudia
  */
-public class cuentaBancaria {
+public class CuentaBancaria {
     public int nCuenta;
     public String titular;
     public double saldo;
 
-    public cuentaBancaria(int nCuenta, String titular, double saldo) {
+    public CuentaBancaria(String titular, String juan_Pérez, double saldo) {
         this.nCuenta = nCuenta;
         this.titular = titular;
         this.saldo = saldo;
@@ -41,6 +41,31 @@ public class cuentaBancaria {
 
     public double getSaldo() {
         return saldo;
+    }
+    
+    // Métodos para las operaciones bancarias
+
+    // Consultar saldo
+    public double consultarSaldo() {
+        return saldo;
+    }
+
+    // Depositar dinero
+    public void depositar(double cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("No se puede depositar una cantidad negativa o cero.");
+        }
+        saldo += cantidad;
+        System.out.println("Depósito exitoso. Saldo actual: " + saldo);
+    }
+
+    // Retirar dinero
+    public void retirar(double cantidad) throws SaldoInsuficienteException {
+        if (cantidad > saldo) {
+            throw new SaldoInsuficienteException();
+        }
+        saldo -= cantidad;
+        System.out.println("Retiro exitoso. Saldo actual: " + saldo);
     }
     
 }
