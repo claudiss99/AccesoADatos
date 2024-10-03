@@ -1,0 +1,289 @@
+public class CuentaBancaria {
+    private String numeroCuenta;
+    private String nombreTitular;
+    private String dniTitular;
+    private double saldo;
+
+    public CuentaBancaria(String numeroCuenta, String nombreTitular, String dniTitular, double saldoInicial) {
+        this.numeroCuenta = numeroCuenta;
+        this.nombreTitular = nombreTitular;
+        this.dniTitular = dniTitular;
+        this.saldo = saldoInicial;
+    }
+
+    public String getNumeroCuenta() {
+        return numeroCuenta;
+    }
+
+    public String getNombreTitular() {
+        return nombreTitular;
+    }
+
+    public String getDniTitular() {
+        return dniTitular;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void depositar(double cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a depositar debe ser mayor a cero.");
+        }
+        saldo += cantidad;
+    }
+
+    public void retirar(double cantidad) throws SaldoInsuficienteException {
+        if (cantidad > saldo) {
+            throw new SaldoInsuficienteException("Saldo insuficiente para realizar el retiro.");
+        }
+        saldo -= cantidad;
+    }
+
+    @Override
+    public String toString() {
+        return numeroCuenta + "," + nombreTitular + "," + dniTitular + "," + saldo;
+    }
+}
+
+---------------------------------------
+Excepción personalizada SaldoInsuficienteException
+public class SaldoInsuficienteException extends Exception {
+    public SaldoInsuficienteException(String mensaje) {
+        super(mensaje);
+    }
+}
+
+--------------------------------------------
+Clase Banco
+import java.io.*;
+import java.util.*;
+
+public class Banco {
+    private Map<String, CuentaBancaria> cuentasPorDni;
+    private Map<String, CuentaBancaria> cuentasPorNumero;
+
+    public Banco() {
+        cuentasPorDni = new HashMap<>();
+        cuentasPorNumero = new HashMap<>();
+        cargarDatos();
+    }
+
+    public void añadirCuenta(CuentaBancaria cuenta) throws Exception {
+        if (cuentasPorDni.containsKey(cuenta.getDniTitular())) {
+            throw new Exception("El titular ya tiene una cuenta registrada.");
+        }
+        if (cuentasPorNumero.containsKey(cuenta.getNumeroCuenta())) {
+            throw new Exception("El número de cuenta ya existe.");
+        }
+        cuentasPorDni.put(cuenta.getDniTitular(), cuenta);
+        cuentasPorNumero.put(cuenta.getNumeroCuenta(), cuenta);
+        guardarDatos();
+    }
+
+    public CuentaBancaria consultarPorDni(String dni) {
+        return cuentasPorDni.get(dni);
+    }
+
+    public CuentaBancaria consultarPorNumero(String numeroCuenta) {
+        return cuentasPorNumero.get(numeroCuenta);
+    }
+
+    public void depositarPorDni(String dni, double cantidad) {
+        CuentaBancaria cuenta = cuentasPorDni.get(dni);
+        if (cuenta != null) {
+            cuenta.depositar(cantidad);
+            guardarDatos();
+        }
+    }
+
+    public void depositarPorNumero(String numeroCuenta, double cantidad) {
+        CuentaBancaria cuenta = cuentasPorNumero.get(numeroCuenta);
+        if (cuenta != null) {
+            cuenta.depositar(cantidad);
+            guardarDatos();
+        }
+    }
+
+    public void retirarPorDni(String dni, double cantidad) throws SaldoInsuficienteException {
+        CuentaBancaria cuenta = cuentasPorDni.get(dni);
+        if (cuenta != null) {
+            cuenta.retirar(cantidad);
+            guardarDatos();
+        }
+    }
+
+    public void retirarPorNumero(String numeroCuenta, double cantidad) throws SaldoInsuficienteException {
+        CuentaBancaria cuenta = cuentasPorNumero.get(numeroCuenta);
+        if (cuenta != null) {
+            cuenta.retirar(cantidad);
+            guardarDatos();
+        }
+    }
+
+    private void cargarDatos() {
+        try (BufferedReader br = new BufferedReader(new FileReader("cuentas.csv"))) {
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                String[] datos = linea.split(",");
+                String numeroCuenta = datos[0];
+                String nombreTitular = datos[1];
+                String dniTitular = datos[2];
+                double saldo = Double.parseDouble(datos[3]);
+                CuentaBancaria cuenta = new CuentaBancaria(numeroCuenta, nombreTitular, dniTitular, saldo);
+                cuentasPorDni.put(dniTitular, cuenta);
+                cuentasPorNumero.put(numeroCuenta, cuenta);
+            }
+        } catch (IOException e) {
+            System.out.println("Error al cargar los datos: " + e.getMessage());
+        }
+    }
+
+    private void guardarDatos() {
+        try (PrintWriter pw = new PrintWriter(new FileWriter("cuentas.csv"))) {
+            for (CuentaBancaria cuenta : cuentasPorDni.values()) {
+                pw.println(cuenta.toString());
+            }
+        } catch (IOException e) {
+            System.out.println("Error al guardar los datos: " + e.getMessage());
+        }
+    }
+}
+----------------------
+Menú de la aplicación
+
+import java.util.Scanner;
+
+public class BancoApp {
+
+    public static void main(String[] args) {
+        Banco banco = new Banco();
+        Scanner scanner = new Scanner(System.in);
+        int opcion;
+
+        do {
+            System.out.println("\n--- Menú Banco ---");
+            System.out.println("1. Añadir cuenta bancaria");
+            System.out.println("2. Consultar saldo por DNI");
+            System.out.println("3. Consultar saldo por NC");
+            System.out.println("4. Depositar dinero por DNI");
+            System.out.println("5. Depositar dinero por NC");
+            System.out.println("6. Retirar dinero por DNI");
+            System.out.println("7. Retirar dinero por NC");
+            System.out.println("8. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
+
+            switch (opcion) {
+                case 1:
+                    try {
+                        System.out.print("Número de cuenta: ");
+                        String numeroCuenta = scanner.nextLine();
+                        System.out.print("Nombre del titular: ");
+                        String nombreTitular = scanner.nextLine();
+                        System.out.print("DNI del titular: ");
+                        String dniTitular = scanner.nextLine();
+                        System.out.print("Saldo inicial: ");
+                        double saldoInicial = scanner.nextDouble();
+                        scanner.nextLine(); // Limpiar el buffer
+                        CuentaBancaria nuevaCuenta = new CuentaBancaria(numeroCuenta, nombreTitular, dniTitular, saldoInicial);
+                        banco.añadirCuenta(nuevaCuenta);
+                        System.out.println("Cuenta añadida exitosamente.");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("DNI del titular: ");
+                    String dniConsulta = scanner.nextLine();
+                    CuentaBancaria cuentaDni = banco.consultarPorDni(dniConsulta);
+                    if (cuentaDni != null) {
+                        System.out.println("Saldo actual: " + cuentaDni.getSaldo());
+                    } else {
+                        System.out.println("No se encontró la cuenta con ese DNI.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("Número de cuenta: ");
+                    String numeroConsulta = scanner.nextLine();
+                    CuentaBancaria cuentaNumero = banco.consultarPorNumero(numeroConsulta);
+                    if (cuentaNumero != null) {
+                        System.out.println("Saldo actual: " + cuentaNumero.getSaldo());
+                    } else {
+                        System.out.println("No se encontró la cuenta con ese número.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.print("DNI del titular: ");
+                    String dniDeposito = scanner.nextLine();
+                    System.out.print("Cantidad a depositar: ");
+                    double cantidadDeposito = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar el buffer
+                    try {
+                        banco.depositarPorDni(dniDeposito, cantidadDeposito);
+                        System.out.println("Depósito realizado.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 5:
+                    System.out.print("Número de cuenta: ");
+                    String numeroDeposito = scanner.nextLine();
+                    System.out.print("Cantidad a depositar: ");
+                    double cantidadDepositoNC = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar el buffer
+                    try {
+                        banco.depositarPorNumero(numeroDeposito, cantidadDepositoNC);
+                        System.out.println("Depósito realizado.");
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 6:
+                    System.out.print("DNI del titular: ");
+                    String dniRetiro = scanner.nextLine();
+                    System.out.print("Cantidad a retirar: ");
+                    double cantidadRetiro = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar el buffer
+                    try {
+                        banco.retirarPorDni(dniRetiro, cantidadRetiro);
+                        System.out.println("Retiro realizado.");
+                    } catch (SaldoInsuficienteException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 7:
+                    System.out.print("Número de cuenta: ");
+                    String numeroRetiro = scanner.nextLine();
+                    System.out.print("Cantidad a retirar: ");
+                    double cantidadRetiroNC = scanner.nextDouble();
+                    scanner.nextLine(); // Limpiar el buffer
+                    try {
+                        banco.retirarPorNumero(numeroRetiro, cantidadRetiroNC);
+                        System.out.println("Retiro realizado.");
+                    } catch (SaldoInsuficienteException e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                    break;
+
+                case 8:
+                    System.out.println("Saliendo...");
+                    break;
+
+                default:
+                    System.out.println("Opción no válida.");
+            }
+        } while (opcion != 8);
+
+        scanner.close();
+    }
+}
+
