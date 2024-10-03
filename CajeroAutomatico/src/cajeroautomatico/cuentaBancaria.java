@@ -13,7 +13,7 @@ public class CuentaBancaria {
     public String titular;
     public double saldo;
 
-    public CuentaBancaria(String titular, String juan_Pérez, double saldo) {
+    public CuentaBancaria(String titular, String paco_Pérez, double saldo) {
         this.nCuenta = nCuenta;
         this.titular = titular;
         this.saldo = saldo;
@@ -39,9 +39,6 @@ public class CuentaBancaria {
         return titular;
     }
 
-    public double getSaldo() {
-        return saldo;
-    }
     
     // Métodos para las operaciones bancarias
 
