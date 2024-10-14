@@ -4,7 +4,11 @@
  */
 package tema1;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 /**
@@ -18,15 +22,33 @@ public class RAbsoluta6 {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        // TODO code application logic here
-        /*Crea un programa donde creas un fichero de temporal y 
-        muestra la ruta absoluta al fichero. Almacena en el fichero 
-        nombres y edades de personas. Ahora lee el documento y muéstralo 
-        por la salida estándar. Al finalizar, elimine el fichero temporal.*/
-        File fTemp = File.createTempFile("guardarAbosuteRute", "");
-        fTemp.deleteOnExit();
-        System.out.println("Ruta absoluta donde se ha creado el fichero: "+fTemp.getAbsolutePath());
-        
+        // Crea un archivo temporal
+        try {
+            // Crea un programa donde creas un fichero de temporal 
+            File fTemp = File.createTempFile("tempfile", "");
+            // muestra la ruta absoluta al fichero
+            System.out.println("Ruta absoluta donde se ha creado el fichero: " + fTemp.getAbsolutePath());
+            //elimine el fichero temporal(lo va a eliminar cuando acabe)
+            fTemp.deleteOnExit();
+            // Almacena en el fichero nombres y edades de personas (No se especifica como se añaden)
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fTemp))) {
+                writer.write("Jose, 30");
+                writer.newLine();
+                writer.write("María, 25");
+                writer.newLine();
+                writer.write("Carla, 21");
+                writer.newLine();
+            }
+            // Ahora lee el documento y muéstralo 
+            try (BufferedReader reader = new BufferedReader(new FileReader(fTemp))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    System.out.println(line);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }   
     }
     
 }
