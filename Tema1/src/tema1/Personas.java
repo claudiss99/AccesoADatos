@@ -72,7 +72,8 @@ public class Personas {
                 fTemp.deleteOnExit();
             } else if (opcion.equalsIgnoreCase("guardar")) {
                 // Preguntar por el nombre del fichero
-                System.out.print("Introduce el nombre del fichero: ");
+                System.out.print("Introduce el nom"
+                        + "bre del fichero: ");
                 String fileN = sc.next();
                 File fSave = new File(fileN + ".csv");
                 //¿Quiero que mi fichero temporal ya no sea temporal?
