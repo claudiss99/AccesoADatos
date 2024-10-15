@@ -33,6 +33,7 @@ public class Personas {
         // Usaremos un fichero temporal donde se irá guardando las personas que cumplen el rango de edad introducido
         try {
             File fTemp = File.createTempFile("personas_filtradas", ".csv");
+            System.out.println(fTemp.getAbsolutePath());
             try (BufferedReader reader = new BufferedReader(new FileReader(fileName));
                  BufferedWriter writer = new BufferedWriter(new FileWriter(fTemp))) {
 
@@ -69,19 +70,17 @@ public class Personas {
                         System.out.println(linea);
                     }
                 }
-                fTemp.deleteOnExit();
+                fTemp.delete();
             } else if (opcion.equalsIgnoreCase("guardar")) {
                 // Preguntar por el nombre del fichero
-                System.out.print("Introduce el nom"
-                        + "bre del fichero: ");
+                System.out.print("Introduce el nombre del fichero: ");
                 String fileN = sc.next();
                 File fSave = new File(fileN + ".csv");
-                //¿Quiero que mi fichero temporal ya no sea temporal?
                 fTemp.renameTo(fSave);
             }
 
         } catch (IOException e) {
-            System.err.println("Error al procesar el archivo: " + e.getMessage());
+            System.err.println("Error al procesar el archivo");
         } 
     }
 }

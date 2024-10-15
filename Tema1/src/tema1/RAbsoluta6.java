@@ -38,13 +38,15 @@ public class RAbsoluta6 {
                 writer.newLine();
                 writer.write("Carla, 21");
                 writer.newLine();
+                writer.flush();
             }
-            // Ahora lee el documento y muéstralo 
+            // Ahora lee el documento y muéstralo (try with resource hace el close solo)
             try (BufferedReader reader = new BufferedReader(new FileReader(fTemp))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     System.out.println(line);
                 }
+                
             }
         } catch (IOException e) {
             System.err.println("Error: " + e.getMessage());
