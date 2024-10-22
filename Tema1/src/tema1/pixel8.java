@@ -15,18 +15,22 @@ import javax.imageio.ImageIO;
  * @author Claudia
  */
 public class pixel8 {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         System.out.println("Escribe el nombre de la imagen");
         Scanner sc = new Scanner(System.in);
         String imageName = sc.nextLine();
         
-        BufferedImage image = ImageIO.read(new File(imageName));
-        double anchura = image.getWidth();
-        double altura = image.getHeight();
-        System.out.println("Ancho: "+anchura);
-        System.out.println("Alto: "+altura);
-        System.out.println("Numero de pixeles: "+(anchura*altura));
-        //Modificacion de la imagen
-        ImageIO.write(image, "jpg", new File("modifica.png"));
+        try {
+            BufferedImage image = ImageIO.read(new File(imageName));
+            double anchura = image.getWidth();
+            double altura = image.getHeight();
+            System.out.println("Ancho: "+anchura);
+            System.out.println("Alto: "+altura);
+            System.out.println("Numero de pixeles: "+(anchura*altura));
+            //Modificacion de la imagen
+            ImageIO.write(image, "jpg", new File("modifica.png"));
+        } catch (IOException e) {
+            System.err.println("Error en la entrada o salida de la imagen ");
+        }
     }
 }
