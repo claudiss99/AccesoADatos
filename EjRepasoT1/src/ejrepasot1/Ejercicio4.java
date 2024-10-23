@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package ejerciciosrepasot1;
+package ejrepasot1;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +13,8 @@ import java.util.ArrayList;
  */
 public class Ejercicio4 {
     public static void main(String[] args) {
-        File dir = new File(args[0]);
+        //File dir = new File(args[0]);
+        File dir = new File("claudia");
         if (dir.exists() && dir.isDirectory()){
             //Crear 2 listas: una para las extensiones y otra para contarlas
             ArrayList<String> extensions = new ArrayList<>();
@@ -57,9 +58,11 @@ public class Ejercicio4 {
     }
     
     public static String getExtension(File f){
-        String[] puntos = f.getName().split("\\.");
+        String[] puntos = f.getName().split(".");
         String extension = puntos[puntos.length-1];
         return extension;
 
     }
+    
+    
 }

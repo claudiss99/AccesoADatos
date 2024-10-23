@@ -19,8 +19,8 @@ import java.util.logging.Logger;
  */
 public class Ejercicio7 {
     public static void main(String[] args) {
-        //File fileName = new File(args[0]);
-        File fileName = new File("claudia.txt");
+        File fileName = new File(args[0]);
+
         Scanner sc = new Scanner(System.in);
         String palabra = sc.nextLine();
         try {
@@ -36,7 +36,7 @@ public class Ejercicio7 {
                 }
             }
             reader.close();
-            System.out.println("La palabra "+palabra+"aparece"+bingo);
+            System.out.println("La palabra "+palabra+" aparece"+bingo);
             
             
         } catch (FileNotFoundException ex) {
