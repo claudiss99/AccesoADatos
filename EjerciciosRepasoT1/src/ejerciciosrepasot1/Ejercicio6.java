@@ -20,18 +20,20 @@ public class Ejercicio6 {
         Scanner sc = new Scanner(System.in);
         String linea = sc.nextLine();
         ArrayList<String> texto = new ArrayList<>();
-        while (linea != null){
-            linea = sc.nextLine();
+        while (linea != ""){
             texto.add(linea);
+            linea = sc.nextLine();
+            
         }
         
         String fileName = args[0];
         System.out.println("Escribe SI si quieres sobreescribir el fichero y NO en el caso de que quieras agregar el texto al final");
         String overWrite = sc.nextLine();
-        if(overWrite.toLowerCase == "si"){
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true));
-        }else if (overWrite.toLowerCase == "no"){
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+        BufferedWriter writer = null;
+        if("si".equals(overWrite.toLowerCase())){
+            writer = new BufferedWriter(new FileWriter(fileName));
+        }else if ("no".equals(overWrite.toLowerCase())){
+            writer = new BufferedWriter(new FileWriter(fileName, true));
         }else{
             System.err.println("No se ha introducido el parametro correcto");
             System.exit(1);

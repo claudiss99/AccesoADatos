@@ -18,6 +18,7 @@ public class Ejercicio2 {
         //Comprobamos que sea un directorio y que existe
         if(dir.exists() && dir.isDirectory()){
             //Se llama a la función para listar
+            listarFiles(dir);
             
         }else{
             System.out.println("No existe el directorio");
