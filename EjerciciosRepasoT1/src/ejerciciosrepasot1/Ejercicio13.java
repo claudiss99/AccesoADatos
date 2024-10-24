@@ -52,6 +52,10 @@ public class Ejercicio13 {
                 writer.newLine();
                 
             }
+            if (writer != null){
+                writer.flush();
+                writer.close();
+            }
             System.out.println("Se han creado " + capitulo + " archivos de salida.");
         } catch (IOException e) {
             System.out.println("Se produjo un error al leer o escribir archivos.");
