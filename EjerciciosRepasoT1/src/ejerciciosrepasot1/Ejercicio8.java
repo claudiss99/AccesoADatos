@@ -25,14 +25,21 @@ public class Ejercicio8 {
         Scanner sc = new Scanner(System.in);
         String palabra = sc.nextLine();
         String reemplazo = sc.nextLine();
+        String texto = "";
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            String linea= "";
-            while((linea = reader.readLine()) != null){
-                linea = linea.replace(palabra, reemplazo);
+            try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+                String linea= "";
+                while((linea = reader.readLine()) != null){
+                    linea = linea.replace(palabra, reemplazo);
+                    texto += linea;
+                }
             }
-            reader.close();
-
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))){
+                writer.write(texto);
+                writer.newLine();
+                writer.flush();
+                writer.close();
+            }
             
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Ejercicio8.class.getName()).log(Level.SEVERE, null, ex);

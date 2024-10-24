@@ -24,8 +24,11 @@ public class Ejercicio10 {
         File fileName = new File(sc.nextLine());
         
         try {
-            DataInputStream dos = new DataInputStream(new FileInputStream(fileName));
-            System.out.println(dos.readInt());
+            DataInputStream dis = new DataInputStream(new FileInputStream(fileName));
+            while (dis.available() > 0){
+                System.out.println(dis.readInt());
+            }
+            
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Ejercicio10.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {

@@ -6,19 +6,16 @@ package ejerciciosrepasot1;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Usuario
  */
 public class Ejercicio9 {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Nombre fichero:");
         File fileName = new File(sc.nextLine());
@@ -33,8 +30,9 @@ public class Ejercicio9 {
             }
             dos.flush();
             dos.close();
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Ejercicio9.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Se ha guardado correctamente");
+        } catch (IOException ex) {
+            System.out.println("No se ha podido guardar correctamente");
         }
        
     }

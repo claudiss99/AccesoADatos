@@ -29,7 +29,7 @@ public class Ejercicio13 {
 
         if (!file.exists()) {
             System.out.println("El archivo no existe. Por favor, verifica el nombre.");
-            return;
+            System.exit(1);
         }
 
         try {
@@ -41,30 +41,17 @@ public class Ejercicio13 {
 
             while ((linea = reader.readLine()) != null) {
                 if (linea.startsWith("Capítulo")) {
-                   
-                    if (writer != null) {
-                        writer.close();  
+                    if (writer != null){
+                        writer.flush();
+                        writer.close();
                     }
-                    
-                    
                     String newFile = fileName.replace(".txt", "") + "_cap" + capitulo + ".txt";
                     writer = new BufferedWriter(new FileWriter(newFile));
                 }
-
-                // Escribir la línea en el archivo actual (si writer está abierto)
-                if (writer != null) {
-                    writer.write(linea);
-                    writer.newLine();
-                }
+                writer.write(linea);
+                writer.newLine();
+                
             }
-
-            // Cerrar el último archivo si se abrió alguno
-            if (writer != null) {
-                writer.flush();
-                writer.close();
-            }
-
-            reader.close();
             System.out.println("Se han creado " + capitulo + " archivos de salida.");
         } catch (IOException e) {
             System.out.println("Se produjo un error al leer o escribir archivos.");
