@@ -35,12 +35,13 @@ public class Ejercicio13 {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String linea;
-            //Para saber en que capitulo estamos(suponemos que va en orden¿es así?)
-            int capitulo = 0;  
+            
             BufferedWriter writer = null;  
-
+            String capitulo = null;
             while ((linea = reader.readLine()) != null) {
                 if (linea.startsWith("Capítulo")) {
+                    String[] cap = linea.split(" ");
+                    capitulo = cap[cap.length-1];
                     if (writer != null){
                         writer.flush();
                         writer.close();
