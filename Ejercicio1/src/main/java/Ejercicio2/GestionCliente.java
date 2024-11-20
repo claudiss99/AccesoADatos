@@ -13,7 +13,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class GestionCliente {
-    private static final String URL = "jdbc:mysql://localhost:3306/ad_ej1"; // URL de tu base de datos
+    private static final String URL = "http://localhost/phpmyadmin/index.php?route=/sql&db=ad_ej1.sql&table=cliente&pos=0"; // URL de tu base de datos
     private static final String USER = "2dam";
     private static final String PASSWORD = "2dam";
 
@@ -21,26 +21,25 @@ public class GestionCliente {
         try (Connection conn = DriverManager.getConnection(URL, USER, PASSWORD)) {
             Scanner scanner = new Scanner(System.in);
             int option;
+            mostrarMenu();
+            option = scanner.nextInt();
+            scanner.nextLine(); // Consumir el salto de línea
 
-            do {
-                mostrarMenu();
-                option = scanner.nextInt();
-                scanner.nextLine(); // Consumir el salto de línea
-
-                switch (option) {
-                    case 1 -> listarClientes(conn);
-                    case 2 -> añadirCliente(conn, scanner);
-                    case 3 -> buscarClientePorEmail(conn, scanner);
-                    case 4 -> modificarCliente(conn, scanner);
-                    case 5 -> borrarCliente(conn, scanner);
-                    case 6 -> rankingClientes(conn);
-                    case 7 -> añadirPedido(conn, scanner);
-                    case 8 -> actualizarPedido(conn, scanner);
-                    case 9 -> borrarPedido(conn, scanner);
-                    case 10 -> System.out.println("Saliendo del programa...");
-                    default -> System.out.println("Opción no válida. Intente de nuevo.");
-                }
-            } while (option != 10);
+            switch (option) {
+                case 1 -> listarClientes(conn);
+                case 2 -> añadirCliente(conn, scanner);
+                case 3 -> buscarClientePorEmail(conn, scanner);
+                case 4 -> modificarCliente(conn, scanner);
+                case 5 -> borrarCliente(conn, scanner);
+                case 6 -> rankingClientes(conn);
+                case 7 -> añadirPedido(conn, scanner);
+                case 8 -> actualizarPedido(conn, scanner);
+                case 9 -> borrarPedido(conn, scanner);
+                case 10 -> iniciarSesion(conn, scanner);
+                case 11 -> cambiarContrasena(conn, scanner);
+                case 12 -> System.out.println("Saliendo del programa...");
+                default -> System.out.println("Opción no válida. Intente de nuevo.");
+            }
         } catch (SQLException e) {
             System.out.println("Error al conectar con la base de datos: " + e.getMessage());
         }
@@ -57,7 +56,9 @@ public class GestionCliente {
         System.out.println("7. Añadir un pedido");
         System.out.println("8. Actualizar datos de un pedido");
         System.out.println("9. Borrar un pedido");
-        System.out.println("10. Salir");
+        System.out.println("10. Iniciar sesión");
+        System.out.println("11. Cambiar contraseña");
+        System.out.println("12. Salir");
         System.out.print("Seleccione una opción: ");
     }
 
@@ -285,4 +286,55 @@ public class GestionCliente {
         }
         return -1;
     }
+    
+    private static void iniciarSesion(Connection conn, Scanner scanner) throws SQLException {
+        System.out.print("Ingrese el email: ");
+        String email = scanner.nextLine();
+        System.out.print("Ingrese la contraseña: ");
+        String contrasena = scanner.nextLine();
+
+        String sql = "SELECT nombre FROM cliente WHERE email = ? AND password = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            stmt.setString(2, contrasena);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                System.out.println("Hola " + nombre);
+            } else {
+                System.out.println("Usuario o Contraseña erróneo");
+            }
+        }
+    }
+    
+    private static void cambiarContrasena(Connection conn, Scanner scanner) throws SQLException {
+        System.out.print("Ingrese el email: ");
+        String email = scanner.nextLine();
+
+        String emailCheckQuery = "SELECT COUNT(*) FROM cliente WHERE email = ?";
+        try (PreparedStatement emailCheck = conn.prepareStatement(emailCheckQuery)) {
+            emailCheck.setString(1, email);
+            ResultSet rs = emailCheck.executeQuery();
+            rs.next();
+
+            if (rs.getInt(1) == 0) {
+                System.out.println("El email no existe.");
+                return;
+            }
+        }
+
+        System.out.print("Ingrese la nueva contraseña: ");
+        String nuevaContrasena = scanner.nextLine();
+
+        String sql = "UPDATE cliente SET password = ? WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, nuevaContrasena);
+            stmt.setString(2, email);
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected > 0 ? "Contraseña actualizada correctamente." : "Error al actualizar la contraseña.");
+        }
+    }
+
+
 }
