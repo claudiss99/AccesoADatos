@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.ejercicio1;
+package Ejercicio1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import java.sql.Statement;
  * @author ClaudissPerez
  */
 public class ConexionMySQLBasica {
-    private static final String URL = "http://localhost/phpmyadmin/index.php?route=/database/structure&db=ad_ej1.sql";
+    private static final String URL = "jdbc:mysql://localhost:3306/ejercicio_primero";
     private static final String USER = "2dam";
     private static final String PASSWORD = "2dam";
     
