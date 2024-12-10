@@ -56,17 +56,19 @@ public class ProyectoDAO {
             }
             
             String queryVincular = "INSERT INTO empleado_proyecto (id_empleado, id_proyecto) VALUES (?,?)";
+            
+            PreparedStatement stmtVincular = Conexion.getPreparedStatement(queryVincular);
         
             for(String e: empleados){
                 int idEmpleado = Integer.valueOf(e);
                 
-                PreparedStatement stmtVincular = Conexion.getPreparedStatement(queryVincular);
+                
                 stmtVincular.setInt(1, idEmpleado);
                 stmtVincular.setInt(2, idProyecto);
-                stmtVincular.executeUpdate();
+                stmtVincular.addBatch();
                 
             }
-            
+            stmtVincular.executeBatch();
             Conexion.commit();
             System.out.println("Proyecto agregado con exito");
         }catch(SQLException e){

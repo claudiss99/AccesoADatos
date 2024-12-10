@@ -91,7 +91,7 @@ public class Menu {
         System.out.println("Dime el departamento: ");
         String departamento = sc.nextLine();
         System.out.println("Dime el sueldo: ");
-        double sueldo = Double.valueOf(sc.nextLine());
+        double sueldo = Double.parseDouble(sc.nextLine());
         System.out.println("Dime el fecha de contratacion: ");
         Date fechaContratacion = Date.valueOf(sc.nextLine());
         
@@ -152,15 +152,19 @@ public class Menu {
         System.out.println("Dime fecha fin");
         Date fechaFin = Date.valueOf(sc.nextLine());
         
-        //Como compruebo las fechas ?
-        System.out.println("Dime los empleados separados por espacio");
-        String emple = sc.nextLine();
-        String[] empleados = emple.split(" ");
-        for (String e: empleados){
-            empleadoDAO.findEmpleadoByID(Integer.parseInt(e));
+        if(fechaIncio.after(fechaFin)){
+            System.err.println("La fecha inicio tiene que ser anterior a la fecha fin");
+        }else{
+            System.out.println("Dime los empleados separados por espacio");
+            String emple = sc.nextLine();
+            String[] empleados = emple.split(" ");
+            for (String e: empleados){
+                empleadoDAO.findEmpleadoByID(Integer.parseInt(e));
+            }
+
+            proyectoDAO.addProyecto(nombreProyecto, fechaIncio, fechaFin, empleados);
         }
         
-        proyectoDAO.addProyecto(nombreProyecto, fechaIncio, fechaFin, empleados);
     }
     
     private void modProyecto(){
@@ -179,5 +183,5 @@ public class Menu {
         proyectoDAO.modProyecto(proyecto);
     }
     
-    private void addEmple
+    
 }

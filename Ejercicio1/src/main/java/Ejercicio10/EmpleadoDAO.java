@@ -47,8 +47,8 @@ public class EmpleadoDAO {
             
             ResultSet rs = stmt.executeQuery();
             if(rs.next()){
-                //UPDATE
-                String query2= "UPDATE empleado SET nombre=?, dni=?, departamento=?, sueldo=?, fecha_contratacion=? WHERE id=? AND fecha_finalizacion !=NULL";
+                //UPDATE (No actualizar el dni) Falta poner la fecha de finalizacion a null
+                String query2= "UPDATE empleado SET nombre=?, dni=?, departamento=?, sueldo=?, fecha_contratacion=?, fecha_finalizacion=NULL WHERE id=? AND fecha_finalizacion !=NULL";
                 
                 try{
                     PreparedStatement stmt2= Conexion.getPreparedStatement(query2);
@@ -57,7 +57,7 @@ public class EmpleadoDAO {
                     stmt2.setString(3, empleado.getDepartamento());
                     stmt2.setDouble(4, empleado.getSueldo());
                     stmt2.setDate(5, empleado.getFechaContratacion());
-                    stmt2.setInt(6, empleado.getId());
+                    stmt2.setInt(7, empleado.getId());
                     
                     int filas = stmt2.executeUpdate();
                     if(filas == 0){
@@ -84,7 +84,7 @@ public class EmpleadoDAO {
                     
                     stmt2.executeUpdate();
 
-                    System.out.println("Se ha insertado el empelado en la opcion añadir");
+                    System.out.println("Se ha insertado el empleado en la opcion añadir");
                  
                 }catch(SQLException e){
                     System.err.println("Error al añadir empleado en la opcion añadir");
