@@ -37,7 +37,7 @@ public class ProyectoDAO {
         }
     }
     
-    public void addProyecto(String nombreProyecto, Date fechaInicio, Date fechaFin, String[] empleados){
+    public void addProyectoEmple(String nombreProyecto, Date fechaInicio, Date fechaFin, String[] empleados){
         String queryProyecto = "INSERT INTO proyecto (nombre, fecha_inicio, fecha_fin) VALUES (?,?,?)";
         
         try{
@@ -79,6 +79,27 @@ public class ProyectoDAO {
         }
     }
     
+    public void addProyecto(Proyecto proyecto){
+        String query= "INSERT INTO proyecto (nombre, fecha_inicio, fecha_fin) VALUES (?,?,?)";
+        
+        try{
+            PreparedStatement stmt = Conexion.getPreparedStatement(query);
+            stmt.setString(1, proyecto.getNombre());
+            stmt.setDate(2, proyecto.getFecha_inicio());
+            stmt.setDate(3, proyecto.getFecha_fin());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            int idProyecto =0;
+            if(rs.next()){
+                idProyecto= rs.getInt(1);
+                System.out.println("Se ha creado el proyecto con ID: "+idProyecto);
+            }
+            
+        }catch(SQLException e){
+            System.err.println("Error al insertar proyecto");
+        }
+    }
+    
     public void modProyecto(Proyecto proyecto){
         String query = "UPDATE proyecto SET nombre =?, fecha_inicio=?, fecha_fin=? WHERE id=?";
         
@@ -99,4 +120,68 @@ public class ProyectoDAO {
             System.err.println("Error al modificar el proyecto");
         }
     }
+    
+    public void listarProyectosFuturos(){
+        //Duda con fecha_inicio posterior a hoy
+        String query="SELECT * FROM proyecto WHERE fecha_inicio>CURRENT DATE";
+        System.out.println("id Proyecto, nombre, fecha Inicio, fecha Fin");
+        try{
+            PreparedStatement stmt = Conexion.getPreparedStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                Date fechaInicio = rs.getDate("fecha_inicio");
+                Date fechaFin = rs.getDate("fecha_fin");
+                
+                System.out.println(id+", "+nombre+", "+fechaInicio+", "+fechaFin);
+            }
+        }catch(SQLException e){
+            System.err.println("Error al listar proyectos futuros");
+        }
+    }
+    
+    public void listarProyectosPasados(){
+        //Duda con fecha_fin anterior a hoy
+        String query="SELECT * FROM proyecto WHERE fecha_fin<CURRENT DATE";
+        System.out.println("id Proyecto, nombre, fecha Inicio, fecha Fin");
+        try{
+            PreparedStatement stmt = Conexion.getPreparedStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                Date fechaInicio = rs.getDate("fecha_inicio");
+                Date fechaFin = rs.getDate("fecha_fin");
+                
+                System.out.println(id+", "+nombre+", "+fechaInicio+", "+fechaFin);
+            }
+        }catch(SQLException e){
+            System.err.println("Error al listar proyectos pasados");
+        }
+    }
+    
+    public void listarProyectosActivos(){
+        String query="SELECT * FROM proyecto WHERE CURRENT DATE BETWEEN fecha_inicio AND fecha_fin";
+        System.out.println("id Proyecto, nombre, fecha Inicio, fecha Fin");
+        try{
+            PreparedStatement stmt = Conexion.getPreparedStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                int id = rs.getInt("id");
+                String nombre = rs.getString("nombre");
+                Date fechaInicio = rs.getDate("fecha_inicio");
+                Date fechaFin = rs.getDate("fecha_fin");
+                
+                System.out.println(id+", "+nombre+", "+fechaInicio+", "+fechaFin);
+            }
+        }catch(SQLException e){
+            System.err.println("Error al listar proyectos activos");
+        }
+    }
+    
+    
 }

@@ -22,6 +22,12 @@ public class Proyecto {
         this.fecha_inicio = fecha_inicio;
         this.fecha_fin = fecha_fin;
     }
+    
+    public Proyecto(String nombre, Date fecha_inicio, Date fecha_fin) {
+        this.nombre = nombre;
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_fin = fecha_fin;
+    }
 
     public int getId() {
         return id;

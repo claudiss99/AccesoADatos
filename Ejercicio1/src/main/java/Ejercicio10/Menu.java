@@ -82,7 +82,7 @@ public class Menu {
         System.out.println("16 --> Salir");
     }
     
-   
+    //Ejercicio 1
     private void addEmpleados(){
         System.out.println("Dime tu nombre: ");
         String nombre= sc.nextLine();
@@ -100,7 +100,7 @@ public class Menu {
         
     }
     
-    
+    //Ejercicio 2
     private void modEmpleado(){
         System.out.println("Dime el ID del empleado que quieres modificar");
         int id = Integer.parseInt(sc.nextLine());
@@ -117,6 +117,7 @@ public class Menu {
         empleadoDAO.modEmpleado(empleado);
     }
     
+    //Ejercicio 3
     private void despedirEmpleado(){
         System.out.println("Dime el ID del empleado a despedir");
         int id = Integer.valueOf(sc.nextLine());
@@ -128,6 +129,7 @@ public class Menu {
         empleadoDAO.despedirEmpleado(empleado);
     }
     
+    //Ejercicio 4
     private void listarEmpleadosActivos(){
         ArrayList<Empleado> empleados = new ArrayList<>();
         System.out.println("Empleados (ID, nombre, dni, departamento, sueldo, fecha Contratación");
@@ -136,6 +138,7 @@ public class Menu {
         }
     }
     
+    //Ejercicio 5
     private void listarEmpleadosDespedidos(){
         ArrayList<Empleado> empleados = new ArrayList<>();
         System.out.println("Empleados (ID, nombre, dni, departamento, sueldo, fecha Contratación, fecha de Despido");
@@ -144,6 +147,24 @@ public class Menu {
         }
     }
     
+    //Ejercicio 6
+    private void addProyecto (){
+        System.out.println("Dime el nombre del proyecto");
+        String nombreProyecto = sc.nextLine();
+        System.out.println("Dime fecha inicio");
+        Date fechaIncio = Date.valueOf(sc.nextLine());
+        System.out.println("Dime fecha fin");
+        Date fechaFin = Date.valueOf(sc.nextLine());
+        
+        if(fechaIncio.after(fechaFin)){
+            System.err.println("La fecha inicio tiene que ser anterior a la fecha fin");
+        }else{
+           Proyecto proyecto = new Proyecto(nombreProyecto, fechaIncio, fechaFin);
+           proyectoDAO.addProyecto(proyecto);
+        }
+    }
+    
+    //Ejercicio 7
     private void addProyectoEmpleados(){
         System.out.println("Dime el nombre del proyecto");
         String nombreProyecto = sc.nextLine();
@@ -162,11 +183,12 @@ public class Menu {
                 empleadoDAO.findEmpleadoByID(Integer.parseInt(e));
             }
 
-            proyectoDAO.addProyecto(nombreProyecto, fechaIncio, fechaFin, empleados);
+            proyectoDAO.addProyectoEmple(nombreProyecto, fechaIncio, fechaFin, empleados);
         }
         
     }
     
+    //Ejercicio 8
     private void modProyecto(){
         System.out.println("Dime el nombre del proyecto que quieres modificar");
         int id = Integer.parseInt(sc.nextLine());
@@ -183,5 +205,56 @@ public class Menu {
         proyectoDAO.modProyecto(proyecto);
     }
     
+    //Ejercicio 9
+    private void addEmpleadoProyecto(){
+        System.out.println("Dime el ID del proyecto");
+        int idProyect = Integer.valueOf(sc.nextLine());
+        System.out.println("Dime el ID del empleado");
+        int idEmpleado = Integer.valueOf(sc.nextLine());
+        
+        Empleado_proyecto empleadoproyecto = new Empleado_proyecto(idEmpleado, idProyect);
+        empleadoProyectoDAO.addEmpleadoProyecto(empleadoproyecto);
+    }
     
+    //Ejercicio 10
+    private void addEmpleadosProyecto(){
+        System.out.println("Dime el ID del proyecto");
+        int idProyect = Integer.valueOf(sc.nextLine());
+        System.out.println("Dime los empleados separados por espacio");
+        String emple = sc.nextLine();
+        String[] empleados = emple.split(" ");
+        
+        empleadoProyectoDAO.addEmpleadosProyecto(idProyect, empleados);
+    }
+    
+    //Ejercicio 11
+    public void deleteEmpleadoFromProyect(){
+        System.out.println("Dime el ID del proyecto");
+        int idProyect = Integer.valueOf(sc.nextLine());
+        System.out.println("Dime el ID del empleado");
+        int idEmpleado = Integer.valueOf(sc.nextLine());
+        
+        Empleado_proyecto empleadoproyecto = new Empleado_proyecto(idEmpleado, idProyect);
+        empleadoProyectoDAO.deleteEmpleadoFromProyect(empleadoproyecto);
+    }
+    
+    //Ejercicio 12
+    public void listarProyectosFuturos(){
+        proyectoDAO.listarProyectosFuturos();
+    }
+    
+    //Ejercicio 13
+    public void listarProyectosPasados(){
+        proyectoDAO.listarProyectosPasados();
+    }
+    
+    //Ejercicio 14
+    public void listarProyectosActivos(){
+        proyectoDAO.listarProyectosActivos();
+    }
+    
+    //Ejercicio 15
+    public void listarDetallesProyecto(){
+        
+    }
 }
