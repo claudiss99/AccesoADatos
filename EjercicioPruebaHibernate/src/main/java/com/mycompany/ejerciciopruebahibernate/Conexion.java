@@ -32,7 +32,7 @@ public class Conexion {
             //Iniciar una transaccion
             transaction = session.beginTransaction();
             
-            Cliente cliente = new Cliente(null, "Carlos Martínez", "carlos@email.com", "2024-12-26", null);
+            Cliente cliente = new Cliente(1, "Carlos Martínez", "carlos@email.com", "2024-12-26", null);
             //Guarrda el objeto Cliente en la base de datos
             session.persist(cliente);
             System.out.println("Cliente guardado correctamente");

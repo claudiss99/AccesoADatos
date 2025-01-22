@@ -1,0 +1,7 @@
+<hibernate-configuration>
+    <session-factory>
+  		<property name="hibernate.connection.url">JDBC_URL</property>
+        <property name="hibernate.connection.username">USER</property>
+        <property name="hibernate.connection.password">PASS</property>
+    </session-factory>
+</hibernate-configuration>
