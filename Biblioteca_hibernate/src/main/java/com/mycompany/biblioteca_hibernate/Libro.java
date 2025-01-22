@@ -2,31 +2,58 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.gestion_autores_libros;
+package com.mycompany.biblioteca_hibernate;
+
+import jakarta.persistence.*;
 
 /**
  *
  * @author Claudia
  * 
  */
+
+@Entity
+@Table(name="libro")
+
 public class Libro {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
+    
+    @Column (name = "titulo")
     private String titulo;
-    private String fechaPubli;
+    
+    @Column (name="fecha_publicacion")
+    private String fPubli;
+            
+    @Column (name ="genero")
     private String genero;
+    
+    @Column (name = "isbn")
     private String isbn;
+    
+    @Column (name= "editorial")
     private String editorial;
+    
+    @Column (name = "id_autor")
     private int idAutor;
 
-    public Libro(int id, String titulo, String fechaPubli, String genero, String isbn, String editorial, int idAutor) {
+    public Libro(int id, String titulo, String fPubli, String genero, String isbn, String editorial, int idAutor) {
         this.id = id;
         this.titulo = titulo;
-        this.fechaPubli = fechaPubli;
+        this.fPubli = fPubli;
         this.genero = genero;
         this.isbn = isbn;
         this.editorial = editorial;
         this.idAutor = idAutor;
     }
+
+    public Libro() {
+    }
+    
+    
 
     public int getId() {
         return id;
@@ -44,12 +71,12 @@ public class Libro {
         this.titulo = titulo;
     }
 
-    public String getFechaPubli() {
-        return fechaPubli;
+    public String getfPubli() {
+        return fPubli;
     }
 
-    public void setFechaPubli(String fechaPubli) {
-        this.fechaPubli = fechaPubli;
+    public void setfPubli(String fPubli) {
+        this.fPubli = fPubli;
     }
 
     public String getGenero() {
@@ -82,11 +109,6 @@ public class Libro {
 
     public void setIdAutor(int idAutor) {
         this.idAutor = idAutor;
-    }
-
-    @Override
-    public String toString() {
-        return "Libro{" + "id=" + id + ", titulo=" + titulo + ", fechaPubli=" + fechaPubli + ", genero=" + genero + ", isbn=" + isbn + ", editorial=" + editorial + ", idAutor=" + idAutor + '}';
     }
     
     

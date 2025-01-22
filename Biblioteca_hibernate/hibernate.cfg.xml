@@ -1,7 +1,13 @@
 <hibernate-configuration>
     <session-factory>
-  		<property name="hibernate.connection.url">JDBC_URL</property>
-        <property name="hibernate.connection.username">USER</property>
-        <property name="hibernate.connection.password">PASS</property>
-    </session-factory>
+  		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/gestion_autor</property>
+        <property name="hibernate.connection.username">2Dam</property>
+        <property name="hibernate.connection.password">2Dam</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+        <mapping class="com.mycompany.biblioteca_hibernate.Libro" />
+        <mapping class="com.mycompany.biblioteca_hibernate.Autor" /> 
+   </session-factory>
+
 </hibernate-configuration>

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.gestion_autores_libros;
+package com.mycompany.biblioteca_hibernate;
 
 import java.io.File;
 import org.hibernate.Session;
@@ -22,7 +22,7 @@ public class Conexion {
     private static void init(){
         if(configuration == null){
             // Configuración de Hibernate
-            configuration = new Configuration().configure(new File("resources/hibernate.cfg.xml"));
+            configuration = new Configuration().configure(new File("hibernate.cfg.xml"));
 
             //Se mapean las clases
             //configuration.addAnnotatedClass(Libro.class);
