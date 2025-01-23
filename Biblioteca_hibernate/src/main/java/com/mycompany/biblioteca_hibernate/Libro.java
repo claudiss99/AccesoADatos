@@ -37,8 +37,9 @@ public class Libro {
     @Column (name= "editorial")
     private String editorial;
     
-    @Column (name = "id_autor")
-    private int idAutor;
+    @ManyToOne
+    @JoinColumn (name = "id_autor", referencedColumnName = "id")
+    private Autor autor;
 
     public Libro(int id, String titulo, String fPubli, String genero, String isbn, String editorial, int idAutor) {
         this.id = id;
@@ -47,9 +48,10 @@ public class Libro {
         this.genero = genero;
         this.isbn = isbn;
         this.editorial = editorial;
-        this.idAutor = idAutor;
+        this.autor = AutorDAO.searchAutorById(idAutor);
     }
 
+    
     public Libro() {
     }
     
@@ -103,13 +105,20 @@ public class Libro {
         this.editorial = editorial;
     }
 
-    public int getIdAutor() {
-        return idAutor;
+    public Autor getAutor() {
+        return autor;
     }
 
-    public void setIdAutor(int idAutor) {
-        this.idAutor = idAutor;
+    public void setAutor(Autor autor) {
+        this.autor = autor;
     }
+
+    @Override
+    public String toString() {
+        return "Libro{" + "id=" + id + ", titulo=" + titulo + ", fPubli=" + fPubli + ", genero=" + genero + ", isbn=" + isbn + ", editorial=" + editorial + ", autor=" + autor + '}';
+    }
+
+    
     
     
 }

@@ -6,6 +6,7 @@ package com.mycompany.biblioteca_hibernate;
 
 import java.util.ArrayList;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -15,28 +16,76 @@ public class LibroDAO {
     public static ArrayList<Libro> listarLibros(){
        Session session = Conexion.getSession();
        
-       return (ArrayList<Libro>) session.createQuery("FROM libro", Libro.class).getResultList();
+       return (ArrayList<Libro>) session.createQuery("FROM Libro", Libro.class).getResultList();
     }
     
     public static void addLibro(Libro libro){
         Session session = Conexion.getSession();
-        session.persist(libro);
-        System.out.println("Libro guardado correctamente");
+        Transaction transaction = null;
+        
+        try{
+             //Iniciar transaccion
+            transaction = session.beginTransaction();
+            session.persist(libro);
+            transaction.commit();
+            System.out.println("Libro guardado correctamente");
+        }catch(Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            Conexion.close();
+        }
+        
+       
         
         
     }
     
     public static void deleteLibro(int id){
         Session session = Conexion.getSession();
-        session.remove(id);
-        System.out.println("Libro borrado correctamente");
+        Transaction transaction = null;
+        
+        try{
+             //Iniciar transaccion
+            transaction = session.beginTransaction();
+            session.remove(id);
+            transaction.commit();
+            System.out.println("Libro borrado correctamente");
+        }catch(Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            Conexion.close();
+        }
+        
+        
         
         
     }
     
     public static void updateLibro(Libro libro){
         Session session = Conexion.getSession();
-        session.merge(libro);
+        Transaction transaction = null;
+        
+        try{
+             //Iniciar transaccion
+            transaction = session.beginTransaction();
+            session.merge(libro);
+            transaction.commit();
+            System.out.println("Libro actualizado con exito");
+        }catch(Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            Conexion.close();
+        }
+        
         
         
     }

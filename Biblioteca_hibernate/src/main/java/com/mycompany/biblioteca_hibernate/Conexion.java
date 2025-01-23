@@ -25,7 +25,7 @@ public class Conexion {
             configuration = new Configuration().configure(new File("hibernate.cfg.xml"));
 
             //Se mapean las clases
-            //configuration.addAnnotatedClass(Libro.class);
+            configuration.addAnnotatedClass(Libro.class);
             configuration.addAnnotatedClass(Autor.class);
 
             // Crear una sesión para interactuar con la base de datos

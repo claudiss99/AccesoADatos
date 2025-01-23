@@ -5,6 +5,8 @@
 package com.mycompany.biblioteca_hibernate;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -35,6 +37,9 @@ public class Autor {
     
     @Column(name = "biografia")
     private String biografia;
+    
+    @OneToMany(mappedBy = "autor")
+    private List<Libro> libros = new ArrayList<>();
 
     public Autor(int id, String nombre, String fNacimiento, String nacionalidad, int nObras, String biografia) {
         this.id = id;
@@ -44,6 +49,8 @@ public class Autor {
         this.nObras = nObras;
         this.biografia = biografia;
     }
+
+    
 
     public Autor() {
     }
@@ -96,6 +103,20 @@ public class Autor {
     public void setBiografia(String biografia) {
         this.biografia = biografia;
     }
+
+    public List<Libro> getLibros() {
+        return libros;
+    }
+
+    public void setLibros(List<Libro> libros) {
+        this.libros = libros;
+    }
+
+    @Override
+    public String toString() {
+        return "Autor{" + "id=" + id + ", nombre=" + nombre + ", fNacimiento=" + fNacimiento + ", nacionalidad=" + nacionalidad + ", nObras=" + nObras + ", biografia=" + biografia + '}';
+    }
+    
     
 
 }

@@ -17,14 +17,30 @@ public class AutorDAO {
     
     public static ArrayList<Autor> listarAutores(){
        Session session = Conexion.getSession();
-
-       return (ArrayList<Autor>) session.createQuery("FROM autor", Autor.class).getResultList();
+        return (ArrayList<Autor>) session.createQuery("FROM Autor", Autor.class).getResultList();
     }
     
     public static void addAutor(Autor autor){
         Session session = Conexion.getSession();
-        session.persist(autor);
-        System.out.println("Autor guardado correctamente");
+        
+        Transaction transaction = null;
+        
+        try{
+             //Iniciar transaccion
+            transaction = session.beginTransaction();
+            session.persist(autor);
+            transaction.commit();
+            System.out.println("Autor guardado correctamente");
+        }catch(Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            Conexion.close();
+        }
+        
+        
         
     }
     
@@ -39,7 +55,7 @@ public class AutorDAO {
             transaction = session.beginTransaction();
             
             //Buscamos los libros que tienen ese autor
-            Query query = session.createQuery("FROM libro WHERE idAutor= :idAutor", Libro.class);
+            Query query = session.createQuery("FROM Libro WHERE idAutor= :idAutor", Libro.class);
             query.setParameter("idAutor", idAutor);
             ArrayList<Libro> libros= (ArrayList<Libro>) query.getResultList();
 
@@ -57,8 +73,7 @@ public class AutorDAO {
             }
             e.printStackTrace();
         }finally{
-            session.close();
-            //¿Como cierro la fabrica de sesiones?
+            Conexion.close();
         }
         
         
@@ -67,13 +82,29 @@ public class AutorDAO {
     public static void updateAutor(Autor autor){
         
         Session session = Conexion.getSession();
-        session.merge(autor);
+        Transaction transaction = null;
+        
+        try{
+             //Iniciar transaccion
+            transaction = session.beginTransaction();
+            session.merge(autor);
+            transaction.commit();
+            System.out.println("Autor actualizado con exito");
+        }catch(Exception e){
+            if(transaction != null){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }finally{
+            Conexion.close();
+        }
+       
         
     }
     
     public static Autor searchAutorById(int id){
         Session session = Conexion.getSession();
-        Query query = session.createQuery("FROM autor WHERE id= :id", Autor.class);
+        Query query = session.createQuery("FROM Autor WHERE id= :id", Autor.class);
         query.setParameter("id", id);
         Autor autor = (Autor)query.uniqueResult();
         return autor;
@@ -82,7 +113,7 @@ public class AutorDAO {
     
     public static Autor searhAutorByName(String name){
         Session session = Conexion.getSession();
-        Query query = session.createQuery("FROM autor LIKE :nombre", Autor.class);
+        Query query = session.createQuery("FROM Autor LIKE :nombre", Autor.class);
         query.setParameter("nombre", "%"+name+"%");
         Autor autor = (Autor) query.uniqueResult();
         return autor;
