@@ -50,6 +50,14 @@ public class Autor {
         this.biografia = biografia;
     }
 
+    public Autor(String nombre, String fNacimiento, String nacionalidad, int nObras, String biografia) {
+        this.nombre = nombre;
+        this.fNacimiento = fNacimiento;
+        this.nacionalidad = nacionalidad;
+        this.nObras = nObras;
+        this.biografia = biografia;
+    }
+
     
 
     public Autor() {

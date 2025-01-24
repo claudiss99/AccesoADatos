@@ -51,6 +51,15 @@ public class Libro {
         this.autor = AutorDAO.searchAutorById(idAutor);
     }
 
+    public Libro(String titulo, String fPubli, String genero, String isbn, String editorial, int idAutor) {
+        this.titulo = titulo;
+        this.fPubli = fPubli;
+        this.genero = genero;
+        this.isbn = isbn;
+        this.editorial = editorial;
+        this.autor = AutorDAO.searchAutorById(idAutor);
+    }
+
     
     public Libro() {
     }

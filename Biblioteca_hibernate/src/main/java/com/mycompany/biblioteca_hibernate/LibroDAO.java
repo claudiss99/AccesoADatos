@@ -7,6 +7,7 @@ package com.mycompany.biblioteca_hibernate;
 import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 /**
  *
@@ -50,7 +51,8 @@ public class LibroDAO {
         try{
              //Iniciar transaccion
             transaction = session.beginTransaction();
-            session.remove(id);
+            Libro libro = searchLibroById(id);
+            session.remove(libro);
             transaction.commit();
             System.out.println("Libro borrado correctamente");
         }catch(Exception e){
@@ -85,8 +87,30 @@ public class LibroDAO {
         }finally{
             Conexion.close();
         }
-        
-        
-        
+    }
+    
+    public static Libro searchLibroById(int id){
+        Session session = Conexion.getSession();
+        Query  query = session.createQuery("FROM Libro WHERE id= :id", Libro.class);
+        query.setParameter("id", id);
+        Libro libro = (Libro)query.uniqueResult();
+        return libro;
+    }
+    
+    public static ArrayList<Libro> searchLibroByName(String name){
+        Session session = Conexion.getSession();
+        Query query = session.createQuery("FROM Libro WHERE titulo LIKE :titulo", Libro.class);
+        query.setParameter("titulo", "%"+name+"%");
+        ArrayList<Libro> libros = (ArrayList<Libro>)query.getResultList();
+        return libros;
+    }
+    
+    public static ArrayList<Libro> searchLibroByIdAutor(int idAutor){
+        Session session = Conexion.getSession();
+        Autor autor = AutorDAO.searchAutorById(idAutor);
+        Query query = session.createQuery("FROM Libro WHERE autor= :autor ", Libro.class);
+        query.setParameter("autor", autor);
+        ArrayList<Libro> libros = (ArrayList<Libro>)query.getResultList();
+        return libros;
     }
 }

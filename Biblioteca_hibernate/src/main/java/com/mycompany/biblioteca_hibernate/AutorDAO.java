@@ -53,17 +53,21 @@ public class AutorDAO {
         try{
             //Iniciar transaccion
             transaction = session.beginTransaction();
-            
+            Autor autor = searchAutorById(idAutor);
             //Buscamos los libros que tienen ese autor
-            Query query = session.createQuery("FROM Libro WHERE idAutor= :idAutor", Libro.class);
-            query.setParameter("idAutor", idAutor);
+            Query query = session.createQuery("FROM Libro WHERE autor= :autor", Libro.class);
+            query.setParameter("autor", autor);
             ArrayList<Libro> libros= (ArrayList<Libro>) query.getResultList();
 
-            //Borramos los libros que tiene ese autor
-            session.remove(libros);
+            for(Libro l:libros){
+                //Borramos los libros que tiene ese autor
+          
+                session.remove(l);
+            }
 
+            
             //Borramos el autor
-            session.remove(idAutor);
+            session.remove(autor);
             transaction.commit();
             
             System.out.println("Autor borrado correctamente");
@@ -111,12 +115,12 @@ public class AutorDAO {
         
     }
     
-    public static Autor searhAutorByName(String name){
+    public static ArrayList<Autor> searhAutorByName(String name){
         Session session = Conexion.getSession();
-        Query query = session.createQuery("FROM Autor LIKE :nombre", Autor.class);
+        Query query = session.createQuery("FROM Autor WHERE nombre LIKE :nombre", Autor.class);
         query.setParameter("nombre", "%"+name+"%");
-        Autor autor = (Autor) query.uniqueResult();
-        return autor;
+        ArrayList<Autor> autores = (ArrayList<Autor>) query.getResultList();
+        return autores;
         
     }
 }

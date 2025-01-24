@@ -38,20 +38,29 @@ public class Main {
                     searchAutorByFragment();
                     break;
                 case "7":
-                    listarLibros();
-                    break;
-                case "8":
                     addLibro();
                     break;
-                case "9":
+                case "8":
                     deleteLibro();
                     break;
-                case "10":
+                case "9":
                     updateLibro();
+                    break;
+                case "10":
+                    listarLibros();
+                    break;
+                case "11":
+                    searchLibroById();
+                    break;
+                case "12":
+                    searchLibroByName();
+                    break;
+                case "13":
+                    searchLibroByIdAutor();
                     break;
                 
             }
-        }while(!menuOption.equals("11"));
+        }while(!menuOption.equals("14"));
     }
     
     private static String getMenuOption(){
@@ -65,7 +74,11 @@ public class Main {
         System.out.println("7. Crear Libro");
         System.out.println("8. Borrar Libro");
         System.out.println("9. Actualizar Libro");
-        System.out.println("11. Salir");
+        System.out.println("10. Listar libros");
+        System.out.println("11. Buscar un libro por ID");
+        System.out.println("12. Buscar un libro por fragmento de nombre");
+        System.out.println("13. Buscar libro por id del autor");
+        System.out.println("14. Salir");
         
         return scanner.nextLine();
     }
@@ -95,16 +108,32 @@ public class Main {
     }
     
     private static void searchAutorByFragment(){
-        System.out.println("Dime el fragmento del titulo que quieres buscar");
+        System.out.println("Dime el fragmento del nombre que quieres buscar");
         String fragmento = scanner.nextLine();
-        Autor autor = AutorDAO.searhAutorByName(fragmento);
-        if(autor == null){
+        ArrayList<Autor> autores = AutorDAO.searhAutorByName(fragmento);
+        if(autores == null){
             System.out.println("No se ha encontrado autor");
         }else{
-            System.out.println("Autor: "+autor.toString());
+            for (Autor a:autores){
+                System.out.println("Autor: "+a.toString());
+            }
+            
         }
     }
     
+    private static void searchLibroByIdAutor(){
+        System.out.println("Dime el id del autor: ");
+        int idAutor = Integer.valueOf(scanner.nextLine());
+        ArrayList<Libro> libros = LibroDAO.searchLibroByIdAutor(idAutor);
+        if(libros == null){
+            System.out.println("No se ha encontrado autor");
+        }else{
+            for (Libro l:libros){
+                System.out.println("Libros: "+l.toString());
+            }
+            
+        }
+    }
     private static void addAutor(){
         System.out.println("Nombre: ");
         String nombre = scanner.nextLine();
@@ -117,7 +146,7 @@ public class Main {
         System.out.println("Biografia: ");
         String biografia = scanner.nextLine();
         
-        Autor autor = new Autor(1, nombre, fechaNacim, nacionalidad, obrasPubli, biografia);
+        Autor autor = new Autor(nombre, fechaNacim, nacionalidad, obrasPubli, biografia);
         AutorDAO.addAutor(autor);
     }
     
@@ -168,10 +197,10 @@ public class Main {
         String isbn = scanner.nextLine();
         System.out.println("Editorial: ");
         String editorial = scanner.nextLine();
-        System.out.println("Autor: ");
+        System.out.println("Id Autor: ");
         int id_autor = Integer.valueOf(scanner.nextLine());
         
-        Libro libro = new Libro(1, titulo, fechaPubli, genero, isbn, editorial, id_autor);
+        Libro libro = new Libro(0, titulo, fechaPubli, genero, isbn, editorial, id_autor);
         LibroDAO.addLibro(libro);
     }
     
@@ -200,5 +229,31 @@ public class Main {
         
         Libro libro = new Libro(id, titulo, fechaPubli, genero, isbn, editorial, id_autor);
         LibroDAO.updateLibro(libro);
+    }
+    
+    private static void searchLibroById(){
+        System.out.println("Dame el ID del libro a buscar: ");
+        int id = Integer.valueOf(scanner.nextLine());
+        
+        Libro libro = LibroDAO.searchLibroById(id);
+        if (libro == null){
+            System.out.println("No se ha encontrado autor");
+        }else{
+            System.out.println("Autor: "+libro.toString());
+        }
+    }
+    
+    private static void searchLibroByName(){
+        System.out.println("Dime el fragmento del nombre que quieres buscar");
+        String fragmento = scanner.nextLine();
+        ArrayList<Libro> libros = LibroDAO.searchLibroByName(fragmento);
+        if(libros == null){
+            System.out.println("No se ha encontrado autor");
+        }else{
+            for (Libro l:libros){
+                System.out.println("Autor: "+l.toString());
+            }
+            
+        }
     }
 }
