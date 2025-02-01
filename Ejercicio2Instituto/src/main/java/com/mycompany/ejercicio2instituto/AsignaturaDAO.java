@@ -14,7 +14,7 @@ import org.hibernate.query.Query;
  * @author Claudia
  */
 public class AsignaturaDAO {
-    private static void addAsignatura(Asignatura asignatura){
+    public static void addAsignatura(Asignatura asignatura){
         Session session = Conexion.getSession();
         
         Transaction transaction = null;
@@ -36,7 +36,7 @@ public class AsignaturaDAO {
         }
     }
     
-    private static void updateAsignatura(Asignatura asignatura){
+    public static void updateAsignatura(Asignatura asignatura){
         Session session = Conexion.getSession();
         Transaction transaction = null;
         
@@ -56,7 +56,7 @@ public class AsignaturaDAO {
         }
     }
     
-    private static void deleteAsignatura(int id){
+    public static void deleteAsignatura(int id){
         Session session = Conexion.getSession();
         Transaction transaction = null;
         
@@ -76,15 +76,25 @@ public class AsignaturaDAO {
             
         }
     }
-    private static ArrayList<Asignatura> ListarAsignaturas(){
+    public static ArrayList<Asignatura> listarAsignaturas(){
         Session session = Conexion.getSession();
         return (ArrayList<Asignatura>) session.createQuery("FROM Asignatura", Asignatura.class).getResultList();
     }
-    private static Asignatura searchAsignaturaByID(int id){
+    
+    public static Asignatura searchAsignaturaByID(int id){
         Session session = Conexion.getSession();
-        Query query = session.createQuery("FROM Asignatura WHERE id= :id", Asignatura.class);
-        query.setParameter("id", id);
-        Asignatura asinatura = (Asignatura) query.uniqueResult();
-        return asinatura;
+        Asignatura asignatura = null;
+
+        try {
+            Query<Asignatura> query = session.createQuery(
+                "FROM Asignatura a JOIN FETCH a.profesor WHERE a.id = :id", 
+                Asignatura.class);
+            query.setParameter("id", id);
+            asignatura = query.uniqueResult();
+        } catch (Exception e) {
+            System.out.println("Error al buscar asignatura: " + e.getMessage());
+        }
+
+        return asignatura;
     }
 }

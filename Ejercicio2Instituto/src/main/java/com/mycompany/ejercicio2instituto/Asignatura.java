@@ -25,7 +25,7 @@ public class Asignatura {
     private String nombre;
     
     @Column(name="curso")
-    private int curso;
+    private String curso;
     
     @Column(name="grupo")
     private String grupo;
@@ -34,12 +34,12 @@ public class Asignatura {
     @JoinColumn (name="id_profesor", referencedColumnName = "id")
     private Profesor profesor;
 
-    public Asignatura(int id, String nombre, int curso, String grupo, int idProfesor) {
+    public Asignatura(int id, String nombre, String curso, String grupo, int idProfesor) {
         this.id = id;
         this.nombre = nombre;
         this.curso = curso;
         this.grupo = grupo;
-        //this.profesor = ProfesorDAO.sea;
+        this.profesor = ProfesorDAO.searchProfesorByID(idProfesor);
     }
 
     public Asignatura() {
@@ -61,11 +61,11 @@ public class Asignatura {
         this.nombre = nombre;
     }
 
-    public int getCurso() {
+    public String getCurso() {
         return curso;
     }
 
-    public void setCurso(int curso) {
+    public void setCurso(String curso) {
         this.curso = curso;
     }
 

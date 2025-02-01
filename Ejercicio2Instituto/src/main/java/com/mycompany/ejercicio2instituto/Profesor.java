@@ -30,7 +30,7 @@ public class Profesor {
     @Column(name="departamento")
     private String departamento;
     
-    @OneToMany(mappedBy = "asignatura")
+    @OneToMany(mappedBy = "profesor")
     private List<Asignatura> asignaturas = new ArrayList<>();
 
     public Profesor(int id, String nombre, String departamento) {

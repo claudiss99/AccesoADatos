@@ -15,7 +15,7 @@ import org.hibernate.query.Query;
  */
 public class ProfesorDAO {
     
-    private static void addProfesor(Profesor profesor){
+    public static void addProfesor(Profesor profesor){
         Session session = Conexion.getSession();
         Transaction transaction = null;
         
@@ -34,7 +34,7 @@ public class ProfesorDAO {
         }
     }
     
-    private static void updateProfesor(Profesor profesor){
+    public static void updateProfesor(Profesor profesor){
         Session session = Conexion.getSession();
         Transaction transaction = null;
         
@@ -55,7 +55,7 @@ public class ProfesorDAO {
         }
     }
     
-    private static void deleteProfesor(int idProfesor){
+    public static void deleteProfesor(int idProfesor){
         //Primero hay que borrar todas las asignaturas cuyo profesor sea el que queremos eliminar
         Session session = Conexion.getSession();
         
@@ -88,16 +88,26 @@ public class ProfesorDAO {
             Conexion.close();
         }
     }
-    private static ArrayList<Profesor> ListarProfesores(){
+    public static ArrayList<Profesor> listarProfesores(){
         Session session = Conexion.getSession();
         return (ArrayList<Profesor>) session.createQuery("FROM profesor", Profesor.class);
         
     }
-    private static Profesor searchProfesorByID(int id){
+    public static Profesor searchProfesorByID(int id){
         Session session = Conexion.getSession();
-        Query query = session.createQuery("FROM Profesor WHERE id= :id", Profesor.class);
-        query.setParameter("id", id);
-        Profesor profesor = (Profesor) query.uniqueResult();
+        Profesor profesor = null;
+
+        try {
+            //Se usa el fetch para acceder directamente a asignaturas en la query sino se pone, despues no se puede hacer fuera profesor.getasignaturas
+            Query<Profesor> query = session.createQuery(
+                "FROM Profesor p LEFT JOIN FETCH p.asignaturas WHERE p.id = :id", 
+                Profesor.class);
+            query.setParameter("id", id);
+            profesor = query.uniqueResult();
+        } catch (Exception e) {
+            System.out.println("Error al buscar profesor: " + e.getMessage());
+        } 
+
         return profesor;
     }
 }
