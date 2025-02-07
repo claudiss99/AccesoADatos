@@ -45,7 +45,7 @@ public class Producto implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "precio")
-    private BigDecimal precio;
+    private double precio;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idProducto")
     private ArrayList<DetallePedido> detallePedido;
 
@@ -56,7 +56,7 @@ public class Producto implements Serializable {
         this.id = id;
     }
 
-    public Producto(Integer id, String nombre, int stock, BigDecimal precio) {
+    public Producto(Integer id, String nombre, int stock, double precio) {
         this.id = id;
         this.nombre = nombre;
         this.stock = stock;
@@ -83,15 +83,21 @@ public class Producto implements Serializable {
         return stock;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setStock(int cantidad) {
+        if (this.stock<cantidad){
+            throw new IllegalArgumentException("No hay stock suficiente");
+        }else{
+            this.stock -= cantidad;
+        }
+            
+        
     }
 
-    public BigDecimal getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(BigDecimal precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 

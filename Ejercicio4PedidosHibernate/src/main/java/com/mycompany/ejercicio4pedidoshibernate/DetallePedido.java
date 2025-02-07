@@ -40,7 +40,7 @@ public class DetallePedido implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Basic(optional = false)
     @Column(name = "subtotal")
-    private BigDecimal subtotal;
+    private double subtotal;
     @JoinColumn(name = "id_pedido", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Pedido idPedido;
@@ -55,12 +55,12 @@ public class DetallePedido implements Serializable {
         this.id = id;
     }
 
-    public DetallePedido(Integer id, int cantidad, BigDecimal subtotal) {
-        this.id = id;
+    public DetallePedido(int cantidad, double subtotal) {
         this.cantidad = cantidad;
         this.subtotal = subtotal;
     }
 
+    
     public Integer getId() {
         return id;
     }
@@ -77,11 +77,11 @@ public class DetallePedido implements Serializable {
         this.cantidad = cantidad;
     }
 
-    public BigDecimal getSubtotal() {
+    public double getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(BigDecimal subtotal) {
+    public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
 
