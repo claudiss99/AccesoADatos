@@ -101,9 +101,4 @@ public class ProyectoDAO {
         String fechaFormateada = hoy.format(formato);
         return (ArrayList<Proyecto>) session.createQuery("FROM proyecto p WHERE  :fechaFormateada BETWEEN p.fecha_inicio AND fecha_fin").setParameter("fechaFormateada", hoy);
     }
-    
-    public static ArrayList<Proyecto> listDetailsProyect(){
-        Session session = Conexion.getSession();
-        
-    }
 }

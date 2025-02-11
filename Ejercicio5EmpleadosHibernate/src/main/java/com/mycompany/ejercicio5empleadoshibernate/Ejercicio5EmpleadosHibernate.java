@@ -299,13 +299,20 @@ public class Ejercicio5EmpleadosHibernate {
     }
     
     private static void listDetalleProyecto(){
-        /*
-        Listar los detalles de un proyecto: 
-        Muestra los detalles de un proyecto, nombre, fecha inicio, fecha finalización y 
-        una lista con los trabajadores, mostrando el ID, nombre, dni, departamento y estado (
-        activo o despedido).
-        
-        */
+        System.out.println("Escribe el id del proyecto: ");
+        int idProyect = Integer.valueOf(sc.nextLine());
+        Proyecto proyecto = ProyectoDAO.getByID(idProyect);
+        System.out.println("Lista de empleados del proyecto: ");
+        ArrayList<Empleado> empleados = proyecto.getEmpleado();
+        for (Empleado e: empleados){
+            String estado;
+            if (e.getFechaFinalizacion() == null){
+                estado = "Activo";
+            }else{
+                estado= "Inactivo";
+            }
+            System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Estado: "+estado);
+        }
         
     }
     
