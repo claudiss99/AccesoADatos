@@ -43,9 +43,8 @@ public class ProductoDAO {
         Producto producto = null;
 
         try {
-            //Se usa el fetch para acceder directamente a asignaturas en la query sino se pone, despues no se puede hacer fuera profesor.getasignaturas
             Query<Producto> query = session.createQuery(
-                "FROM Producto p WHERE p.stock - :stock", 
+                "FROM Producto p WHERE p.stock < :stock", 
                 Producto.class);
             query.setParameter("stock", stock);
             producto = query.uniqueResult();

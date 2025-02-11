@@ -4,7 +4,6 @@
  */
 package com.mycompany.ejercicio4pedidoshibernate;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +32,8 @@ public class PedidoDAO {
                 DetallePedido detalle = new DetallePedido(cantidad.getValue(), subtotal);
                 detalle.setIdPedido(pedido);
                 detalle.setIdProducto(producto);
+                detalle.setCantidad(cantidad.getValue());
+                detalle.setSubtotal(subtotal);
                 session.persist(detalle);
             }
             
@@ -59,7 +60,7 @@ public class PedidoDAO {
         Pedido pedido = null;
 
         try {
-            //Se usa el fetch para acceder directamente a asignaturas en la query sino se pone, despues no se puede hacer fuera profesor.getasignaturas
+           
             Query<Pedido> query = session.createQuery(
                 "FROM Pedido p WHERE p.id = :id", 
                 Pedido.class);
@@ -72,8 +73,4 @@ public class PedidoDAO {
         return pedido;
     }
     
-    public static void listDetalles(Pedido pedido){
-        ArrayList<DetallePedido> detalles = pedido.getDetallePedido();
-        
-    }
 }

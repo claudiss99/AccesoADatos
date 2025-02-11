@@ -5,6 +5,7 @@
 package com.mycompany.ejercicio4pedidoshibernate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -101,23 +102,41 @@ public class GestionPedidos {
         } else {
             System.out.println("Pedido encontrado: ");
             System.out.println(pedido.toString());
-            PedidoDAO.listDetalles(pedido);
+            DetallesPedidoDAO.listDetalles(pedido);
         }
     }
     
     private static void addProducto() {
-        System.out.println("Función no implementada aún.");
-        // ProductoDAO.addProducto();
+        System.out.print("Nombre del producto: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Stock: ");
+        int stock = scanner.nextInt();
+        System.out.print("Precio: ");
+        double precio = scanner.nextDouble();
+        scanner.nextLine();
+
+        Producto productoNuevo = new Producto(null, nombre, stock, precio);
+        ProductoDAO.addProducto(productoNuevo);
+        System.out.println("Producto agregado correctamente");
     }
     
     private static void listProductos() {
-        System.out.println("Función no implementada aún.");
-        // ProductoDAO.listProducto();
+        List<Producto> productos = ProductoDAO.listProducto();
+        System.out.println("Lista de productos:");
+        for (Producto producto : productos) {
+            System.out.println("ID: " + producto.getId() + " Nombre: " + producto.getNombre() + " Stock: " + producto.getStock() + " Precio: " + producto.getPrecio());
+        }
     }
     
     private static void listProductosByStock() {
-        System.out.println("Función no implementada aún.");
-        // ProductoDAO.listProductByStock();
+        System.out.print("Ingrese el stock: ");
+        int stockMaximo = scanner.nextInt();
+        scanner.nextLine(); 
+        List<Producto> productos = (List<Producto>) ProductoDAO.listProductByStock(stockMaximo);
+        System.out.println("Productos con stock inferior a " + stockMaximo + ":");
+        for (Producto producto : productos) {
+            System.out.println("ID: " + producto.getId() + " Nombre: " + producto.getNombre() + " Stock: " + producto.getStock() + " Precio: " + producto.getPrecio());
+        }
     }
 }
 
