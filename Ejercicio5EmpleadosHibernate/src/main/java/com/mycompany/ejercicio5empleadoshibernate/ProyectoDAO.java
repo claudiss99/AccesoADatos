@@ -4,6 +4,9 @@
  */
 package com.mycompany.ejercicio5empleadoshibernate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -75,5 +78,32 @@ public class ProyectoDAO {
         }
     }
     
+    public static ArrayList<Proyecto> listFutureProyect(){
+        Session session = Conexion.getSession();
+        LocalDate hoy = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String fechaFormateada = hoy.format(formato);
+        return (ArrayList<Proyecto>) session.createQuery("FROM proyecto p WHERE p.fecha_inicio>:fechaFormateada").setParameter("fechaFormateada", hoy);
+    }
     
+    public static ArrayList<Proyecto> listPastProyect(){
+        Session session = Conexion.getSession();
+        LocalDate hoy = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String fechaFormateada = hoy.format(formato);
+        return (ArrayList<Proyecto>) session.createQuery("FROM proyecto p WHERE p.fecha_inicio<:fechaFormateada").setParameter("fechaFormateada", hoy);
+    }
+    
+    public static ArrayList<Proyecto> listActiveProyect(){
+        Session session = Conexion.getSession();
+        LocalDate hoy = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String fechaFormateada = hoy.format(formato);
+        return (ArrayList<Proyecto>) session.createQuery("FROM proyecto p WHERE  :fechaFormateada BETWEEN p.fecha_inicio AND fecha_fin").setParameter("fechaFormateada", hoy);
+    }
+    
+    public static ArrayList<Proyecto> listDetailsProyect(){
+        Session session = Conexion.getSession();
+        
+    }
 }

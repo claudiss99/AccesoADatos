@@ -144,7 +144,7 @@ public class Ejercicio5EmpleadosHibernate {
     }
     
     private static void listEmpleadoDes(){
-        ArrayList<Empleado> empleados = EmpleadoDAO.listEmpleadoActive();
+        ArrayList<Empleado> empleados = EmpleadoDAO.listEmpleadoDes();
         System.out.println("Lista de empleados despedidos: ");
         for (Empleado e: empleados){
             System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Sueldo: "+e.getSueldo()+"Fecha de contratación: "+e.getFechaContratacion()+"Fecha de despido: "+e.getFechaFinalizacion());
@@ -265,21 +265,47 @@ public class Ejercicio5EmpleadosHibernate {
     
     private static void deleteEmpleFromProyect(){
         
+        System.out.println("Escribe el id del proyecto: ");
+        int idProyect = Integer.valueOf(sc.nextLine());
+        System.out.println("Escribe el id del empleado: ");
+        int idEmpleado = Integer.valueOf(sc.nextLine());
+        
+        
     }
     
     private static void listFututeProyect(){
+        ArrayList<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
+        System.out.println("Lista de proyectos futuros: ");
+        for (Proyecto p: proyectos){
+            System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
+        }
         
     }
     
     private static void listPastProyect(){
-        
+        ArrayList<Proyecto> proyectos = ProyectoDAO.listPastProyect();
+        System.out.println("Lista de proyectos futuros: ");
+        for (Proyecto p: proyectos){
+            System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
+        }
     }
     
     private static void listActiveProyect(){
-        
+        ArrayList<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
+        System.out.println("Lista de proyectos futuros: ");
+        for (Proyecto p: proyectos){
+            System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
+        }
     }
     
     private static void listDetalleProyecto(){
+        /*
+        Listar los detalles de un proyecto: 
+        Muestra los detalles de un proyecto, nombre, fecha inicio, fecha finalización y 
+        una lista con los trabajadores, mostrando el ID, nombre, dni, departamento y estado (
+        activo o despedido).
+        
+        */
         
     }
     

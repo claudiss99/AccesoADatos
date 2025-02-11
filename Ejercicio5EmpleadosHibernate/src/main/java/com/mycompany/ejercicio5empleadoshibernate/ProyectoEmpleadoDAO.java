@@ -95,4 +95,46 @@ public class ProyectoEmpleadoDAO {
             Conexion.close();
         }
     }
+    
+        /*
+        Eliminar un empleado de un proyecto: Se borrará un empleado de un proyecto. Se pedirá el ID del proyecto y el ID del empleado.
+
+        */
+    public static void deleteEmpleFromProyect(int idProyect, int idEmpleado){
+        Session session = Conexion.getSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            //Obtenemos proyecto
+            Proyecto proyecto = session.createQuery("FROM Proyecto p WHERE p.id = :idProyect", Proyecto.class)
+                    .setParameter("idProyect", idProyect)
+                    .getSingleResult();
+
+            //Obtenemos empleado
+            Empleado empleado = session.createQuery("FROM Empleado e WHERE e.id = :idEmpleado", Empleado.class)
+                    .setParameter("idEmpleado", idEmpleado)
+                    .getSingleResult();
+
+            //Verificar si el empleado esta asociado al proyecto
+            if (!proyecto.getEmpleado().contains(empleado)) {
+                throw new Exception("El empleado no está asociado al proyecto");
+            }
+
+            empleado.getProyecto().remove(proyecto);
+            proyecto.getEmpleado().remove(empleado);
+
+            session.merge(empleado);
+            session.merge(proyecto);
+            transaction.commit();
+            System.out.println("Empleado " + idEmpleado + " eliminado del proyecto " + idProyect);
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        } finally {
+            Conexion.close();
+        }
+    }
+        
 }

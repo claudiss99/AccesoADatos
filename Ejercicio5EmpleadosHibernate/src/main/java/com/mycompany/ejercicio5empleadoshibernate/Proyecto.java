@@ -42,13 +42,11 @@ public class Proyecto implements Serializable {
     private String nombre;
     @Basic(optional = false)
     @Column(name = "fecha_inicio")
-    @Temporal(TemporalType.DATE)
     private String fechaInicio;
     @Basic(optional = false)
     @Column(name = "fecha_fin")
-    @Temporal(TemporalType.DATE)
     private String fechaFin;
-    @ManyToMany(mappedBy = "proyectoCollection")
+    @ManyToMany(mappedBy = "proyecto")
     private ArrayList<Empleado> empleados;
 
     public Proyecto() {
