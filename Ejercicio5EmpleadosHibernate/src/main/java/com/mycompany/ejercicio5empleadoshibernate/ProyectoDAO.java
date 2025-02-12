@@ -86,7 +86,6 @@ public class ProyectoDAO {
         String fechaFormateada = hoy.format(formato);
         return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE p.fecha_inicio>:fechaFormateada").setParameter("fechaFormateada", hoy).getResultList();
     }
-    
     public static List<Proyecto> listPastProyect(){
         Session session = Conexion.getSession();
         LocalDate hoy = LocalDate.now();

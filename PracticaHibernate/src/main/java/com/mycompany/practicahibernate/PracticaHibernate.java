@@ -104,39 +104,47 @@ public class PracticaHibernate {
         System.out.println("Escribe el CIF: ");
         String cif = sc.nextLine();
         
-        Proveedor proveedor = new Proveedor(nombre, email, cif);
+        Proveedor proveedor = new Proveedor(null, nombre, email, cif);
         ProveedorDAO.addProveedor(proveedor);
     }
     
     private static void updateProveedor(){
-//        System.out.println("Escribe el id: ");
-//        int id = Integer.valueOf(sc.nextLine());
-//        System.out.println("Escribe el nombre: ");
-//        String nombre = sc.nextLine();
-//        System.out.println("Escribe el departamento: ");
-//        String departamento = sc.nextLine();
-//        System.out.println("Escribe el sueldo: ");
-//        double sueldo = Double.valueOf(sc.nextLine());
-//        
-//        EmpleadoDAO.updateEmpleado(nombre, departamento, sueldo, id);
+        System.out.println("Escribe el id: ");
+        int id = Integer.valueOf(sc.nextLine());
+        System.out.println("Escribe el nombre: ");
+        String nombre = sc.nextLine();
+        System.out.println("Escribe el email: ");
+        String email = sc.nextLine();
+        System.out.println("Escribe el cif: ");
+        String cif = sc.nextLine();
+        
+        ProveedorDAO.updateProveedor(id, nombre, email, cif);
     }
+    
     
     private static void deleteProveedor(){
      
-//        System.out.println("Escribe el id: ");
-//        int id = Integer.valueOf(sc.nextLine());
-//        System.out.println("Escribe fecha de finalización: ");
-//        String fechaFinalizacion = sc.nextLine();
-//        
-//        EmpleadoDAO.deleteEmpleado(id, fechaFinalizacion);
+        System.out.println("Escribe el id: ");
+        int id = Integer.valueOf(sc.nextLine());
+        
+        
+        ProveedorDAO.deleteProveedor(id);
     }
-    
+   
     private static void addActivity(){
-//        ArrayList<Empleado> empleados = EmpleadoDAO.listEmpleadoActive();
-//        System.out.println("Lista de empleados activos: ");
-//        for (Empleado e: empleados){
-//            System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Sueldo: "+e.getSueldo()+"Fecha de contratación: "+e.getFechaContratacion());
-//        }
+        System.out.println("Dame el nombre");
+        String nombre = sc.nextLine();
+        System.out.println("Dame la fecha");
+        String fecha = sc.nextLine();
+        System.out.println("Dame la ubicación");
+        String ubicacion = sc.nextLine();
+        System.out.println("Dame las plazas");
+        int plazas = Integer.valueOf(sc.nextLine());
+        System.out.println("Dame el cif del proveedor");
+        String cif = sc.nextLine();
+        
+        Actividad actividad = new Actividad(nombre, fecha, ubicacion, plazas);
+        ActividadDAO.addActivity(actividad, cif);
     }
     
     private static void deleteActivity(){

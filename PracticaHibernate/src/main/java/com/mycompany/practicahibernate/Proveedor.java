@@ -16,6 +16,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  *
@@ -43,6 +45,7 @@ public class Proveedor implements Serializable {
     @Column(name = "cif")
     private String cif;
     @OneToMany(mappedBy = "idProveedor")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Actividad> actividadList;
 
     public Proveedor() {
@@ -52,7 +55,8 @@ public class Proveedor implements Serializable {
         this.id = id;
     }
 
-    public Proveedor(String nombre, String email, String cif) {
+    public Proveedor(Integer id, String nombre, String email, String cif) {
+        this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.cif = cif;

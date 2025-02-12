@@ -21,6 +21,8 @@ import jakarta.persistence.TemporalType;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 /**
  *
@@ -52,9 +54,12 @@ public class Actividad implements Serializable {
     @Column(name = "plazas_disponibles")
     private int plazasDisponibles;
     @OneToMany(mappedBy = "idActividad")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Compra> compraList;
+    
     @JoinColumn(name = "id_proveedor", referencedColumnName = "id")
     @ManyToOne
+    
     private Proveedor idProveedor;
 
     public Actividad() {
@@ -72,6 +77,13 @@ public class Actividad implements Serializable {
         this.plazasDisponibles = plazasDisponibles;
     }
 
+    public Actividad(String nombre, String fecha, String ubicacion, int plazasDisponibles) {
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.ubicacion = ubicacion;
+        this.plazasDisponibles = plazasDisponibles;
+    }
+    
     public Integer getId() {
         return id;
     }
