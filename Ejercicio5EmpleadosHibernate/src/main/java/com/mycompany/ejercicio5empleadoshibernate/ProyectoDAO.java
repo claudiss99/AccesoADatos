@@ -84,14 +84,14 @@ public class ProyectoDAO {
         LocalDate hoy = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         String fechaFormateada = hoy.format(formato);
-        return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE p.fecha_inicio>:fechaFormateada").setParameter("fechaFormateada", hoy).getResultList();
+        return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE p.fechaInicio>:fechaFormateada").setParameter("fechaFormateada", hoy).getResultList();
     }
     public static List<Proyecto> listPastProyect(){
         Session session = Conexion.getSession();
         LocalDate hoy = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         String fechaFormateada = hoy.format(formato);
-        return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE p.fecha_inicio<:fechaFormateada").setParameter("fechaFormateada", hoy).getResultList();
+        return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE p.fechaInicio<:fechaFormateada").setParameter("fechaFormateada", hoy).getResultList();
     }
     
     public static List<Proyecto> listActiveProyect(){
@@ -99,6 +99,6 @@ public class ProyectoDAO {
         LocalDate hoy = LocalDate.now();
         DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         String fechaFormateada = hoy.format(formato);
-        return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE  :fechaFormateada BETWEEN p.fecha_inicio AND fecha_fin").setParameter("fechaFormateada", hoy).getResultList();
+        return (List<Proyecto>) session.createQuery("FROM Proyecto p WHERE  :fechaFormateada BETWEEN p.fechaInicio AND fechaFin").setParameter("fechaFormateada", hoy).getResultList();
     }
 }

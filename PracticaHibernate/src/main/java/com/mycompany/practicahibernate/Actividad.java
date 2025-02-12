@@ -5,6 +5,7 @@
 package com.mycompany.practicahibernate;
 
 import jakarta.persistence.Basic;
+import jakarta.persistence.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -53,8 +54,7 @@ public class Actividad implements Serializable {
     @Basic(optional = false)
     @Column(name = "plazas_disponibles")
     private int plazasDisponibles;
-    @OneToMany(mappedBy = "idActividad")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "idActividad", cascade = CascadeType.ALL, orphanRemoval= true)
     private List<Compra> compraList;
     
     @JoinColumn(name = "id_proveedor", referencedColumnName = "id")
