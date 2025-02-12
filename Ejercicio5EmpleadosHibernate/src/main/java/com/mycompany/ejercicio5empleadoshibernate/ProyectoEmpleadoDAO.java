@@ -84,6 +84,7 @@ public class ProyectoEmpleadoDAO {
             transaction = session.beginTransaction();
             
             proyecto.setEmpleado(empleados);
+            session.merge(proyecto);
             transaction.commit();
             System.out.println("Proyecto modificado con éxito");
         }catch(Exception e){
@@ -96,10 +97,7 @@ public class ProyectoEmpleadoDAO {
         }
     }
     
-        /*
-        Eliminar un empleado de un proyecto: Se borrará un empleado de un proyecto. Se pedirá el ID del proyecto y el ID del empleado.
 
-        */
     public static void deleteEmpleFromProyect(int idProyect, int idEmpleado){
         Session session = Conexion.getSession();
         Transaction transaction = null;
@@ -114,19 +112,19 @@ public class ProyectoEmpleadoDAO {
             Empleado empleado = session.createQuery("FROM Empleado e WHERE e.id = :idEmpleado", Empleado.class)
                     .setParameter("idEmpleado", idEmpleado)
                     .getSingleResult();
-
             //Verificar si el empleado esta asociado al proyecto
-            if (!proyecto.getEmpleado().contains(empleado)) {
-                throw new Exception("El empleado no está asociado al proyecto");
+            if (proyecto.getEmpleado().contains(empleado)) {
+                empleado.getProyecto().remove(proyecto);
+                proyecto.getEmpleado().remove(empleado);
+                session.merge(empleado);
+                session.merge(proyecto);
+                transaction.commit();
+                System.out.println("Empleado " + idEmpleado + " eliminado del proyecto " + idProyect);
+                
+            }else{
+                System.out.println("El empleado no está asociado al proyecto");
             }
-
-            empleado.getProyecto().remove(proyecto);
-            proyecto.getEmpleado().remove(empleado);
-
-            session.merge(empleado);
-            session.merge(proyecto);
-            transaction.commit();
-            System.out.println("Empleado " + idEmpleado + " eliminado del proyecto " + idProyect);
+            
 
         } catch (Exception e) {
             if (transaction != null) {

@@ -1,6 +1,6 @@
 <hibernate-configuration>
     <session-factory>
-  		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ad_ej10</property>
+  		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ad_practica1</property>
         <property name="hibernate.connection.username">2Dam</property>
         <property name="hibernate.connection.password">2Dam</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>

@@ -2,12 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.ejercicio5empleadoshibernate;
+package com.mycompany.practicahibernate;
 
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import jakarta.persistence.*;
 import java.util.List;
 
 /**
@@ -15,10 +22,10 @@ import java.util.List;
  * @author Claudia
  */
 @Entity
-@Table(name = "proyecto")
+@Table(name = "proveedor")
 @NamedQueries({
-    @NamedQuery(name = "Proyecto.findAll", query = "SELECT p FROM Proyecto p")})
-public class Proyecto implements Serializable {
+    @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p")})
+public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -30,26 +37,25 @@ public class Proyecto implements Serializable {
     @Column(name = "nombre")
     private String nombre;
     @Basic(optional = false)
-    @Column(name = "fecha_inicio")
-    private String fechaInicio;
+    @Column(name = "email")
+    private String email;
     @Basic(optional = false)
-    @Column(name = "fecha_fin")
-    private String fechaFin;
-    @ManyToMany(mappedBy = "proyectos")
-    private List<Empleado> empleados;
+    @Column(name = "cif")
+    private String cif;
+    @OneToMany(mappedBy = "idProveedor")
+    private List<Actividad> actividadList;
 
-    public Proyecto() {
+    public Proveedor() {
     }
 
-    public Proyecto(Integer id) {
+    public Proveedor(Integer id) {
         this.id = id;
     }
 
-    public Proyecto(Integer id, String nombre, String fechaInicio, String fechaFin) {
-        this.id = id;
+    public Proveedor(String nombre, String email, String cif) {
         this.nombre = nombre;
-        this.fechaInicio = fechaInicio;
-        this.fechaFin = fechaFin;
+        this.email = email;
+        this.cif = cif;
     }
 
     public Integer getId() {
@@ -68,28 +74,28 @@ public class Proyecto implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getFechaInicio() {
-        return fechaInicio;
+    public String getEmail() {
+        return email;
     }
 
-    public void setFechaInicio(String fechaInicio) {
-        this.fechaInicio = fechaInicio;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getFechaFin() {
-        return fechaFin;
+    public String getCif() {
+        return cif;
     }
 
-    public void setFechaFin(String fechaFin) {
-        this.fechaFin = fechaFin;
+    public void setCif(String cif) {
+        this.cif = cif;
     }
 
-    public List<Empleado> getEmpleado() {
-        return empleados;
+    public List<Actividad> getActividadList() {
+        return actividadList;
     }
 
-    public void setEmpleado(List<Empleado> empleado) {
-        this.empleados = empleado;
+    public void setActividadList(List<Actividad> actividadList) {
+        this.actividadList = actividadList;
     }
 
     @Override
@@ -102,10 +108,10 @@ public class Proyecto implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Proyecto)) {
+        if (!(object instanceof Proveedor)) {
             return false;
         }
-        Proyecto other = (Proyecto) object;
+        Proveedor other = (Proveedor) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -114,7 +120,7 @@ public class Proyecto implements Serializable {
 
     @Override
     public String toString() {
-        return "com.mycompany.ejercicio5empleadoshibernate.Proyecto[ id=" + id + " ]";
+        return "com.mycompany.practicahibernate.Proveedor[ id=" + id + " ]";
     }
     
 }

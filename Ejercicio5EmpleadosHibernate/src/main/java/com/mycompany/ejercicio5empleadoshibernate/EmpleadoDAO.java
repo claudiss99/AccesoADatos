@@ -5,6 +5,7 @@
 package com.mycompany.ejercicio5empleadoshibernate;
 
 import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -17,10 +18,12 @@ public class EmpleadoDAO {
     public static void addEmpleado(Empleado empleado){
         Session session = Conexion.getSession();
         Transaction transaction = null;
-        
-        //Comprobamos si el empleado existe(Buscar por id)
-        if(EmpleadoDAO.getByID(empleado.getId()) == null){
+        System.out.println(empleado.getDni());
+        Empleado comprobar = EmpleadoDAO.getByDNI(empleado.getDni());
+        System.out.println(comprobar);
+        if(comprobar == null){
             //Si no existe --> se añade
+            
             try{
                 transaction = session.beginTransaction();
                 session.persist(empleado);
@@ -42,14 +45,15 @@ public class EmpleadoDAO {
             try{
                 transaction = session.beginTransaction();
                 //Ponemos la fecha de finalizacion a null
-                empleado.setFechaFinalizacion(null);
+                comprobar.setFechaFinalizacion(null);
                 // Mergeamos lo que tenemos
-                session.merge(empleado);
+                session.merge(comprobar);
+                transaction.commit();
             }catch(Exception e){
                 if(transaction != null){
                     transaction.rollback();
                 }
-                System.err.println("Error al añadir empleado: "+e.getLocalizedMessage());
+                System.err.println("Error al actualizar empleado en añadir: "+e.getLocalizedMessage());
             }finally{
                 Conexion.close();
             }   
@@ -61,8 +65,23 @@ public class EmpleadoDAO {
         Empleado empleado = null;
                 
         try{
-            Query<Empleado> query = session.createQuery("FROM empleado e WHERE e.id = :id", Empleado.class);
+            Query<Empleado> query = session.createQuery("FROM Empleado e WHERE e.id = :id", Empleado.class);
             query.setParameter("id", id);
+            empleado = query.uniqueResult();
+        }catch(Exception e){
+            System.err.println("Error al buscar empleado: "+e.getLocalizedMessage());
+        }
+                
+        return empleado;
+    }
+    
+    public static Empleado getByDNI(String dni){
+        Session session = Conexion.getSession();
+        Empleado empleado = null;
+                
+        try{
+            Query<Empleado> query = session.createQuery("FROM Empleado e WHERE e.dni = :dni", Empleado.class);
+            query.setParameter("dni", dni);
             empleado = query.uniqueResult();
         }catch(Exception e){
             System.err.println("Error al buscar empleado: "+e.getLocalizedMessage());
@@ -91,7 +110,7 @@ public class EmpleadoDAO {
             if(transaction != null){
                 transaction.rollback();
             }
-            System.err.println("Error al añadir empleado: "+e.getLocalizedMessage());
+            System.err.println("Error al modificar empleado: "+e.getLocalizedMessage());
         }finally{
             Conexion.close();
         }
@@ -107,29 +126,32 @@ public class EmpleadoDAO {
             transaction = session.beginTransaction();
             //Buscamos empleado por id
             Empleado empleado = EmpleadoDAO.getByID(id);
+                System.out.println(empleado);
             empleado.setFechaFinalizacion(fechaFinalizacion);
+            System.out.println(empleado.getFechaFinalizacion());
             session.merge(empleado);
-            System.out.println("Empleado modificado con éxito");
+            transaction.commit();
+            System.out.println("Empleado despedido con éxito");
         }catch(Exception e){
             if(transaction != null){
                 transaction.rollback();
             }
-            System.err.println("Error al añadir empleado: "+e.getLocalizedMessage());
+            System.err.println("Error al despedir empleado: "+e.getLocalizedMessage());
         }finally{
             Conexion.close();
         }
     }
     
-    public static ArrayList<Empleado> listEmpleadoActive(){
+    public static List<Empleado> listEmpleadoActive(){
         Session session = Conexion.getSession();
         
-        return (ArrayList<Empleado>) session.createQuery("FROM empleado e WHERE e.fecha_finalizacion IS NULL", Empleado.class);
+        return (List<Empleado>) session.createQuery("FROM Empleado e WHERE e.fechaFinalizacion IS NULL", Empleado.class).getResultList();
     }
     
-    public static ArrayList<Empleado> listEmpleadoDes(){
+    public static List<Empleado> listEmpleadoDes(){
         Session session = Conexion.getSession();
         
-        return (ArrayList<Empleado>) session.createQuery("FROM empleado e WHERE e.fecha_finalizacion NOT NULL", Empleado.class);
+        return (List<Empleado>) session.createQuery("FROM Empleado e WHERE e.fechaFinalizacion IS NOT NULL", Empleado.class).getResultList();
     }
     
     

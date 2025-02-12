@@ -7,22 +7,9 @@ package com.mycompany.ejercicio5empleadoshibernate;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.*;
+import java.util.List;
 
 /**
  *
@@ -62,7 +49,7 @@ public class Empleado implements Serializable {
         @JoinColumn(name = "id_empleado", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "id_proyecto", referencedColumnName = "id")})
     @ManyToMany
-    private ArrayList<Proyecto> proyectos;
+    private List<Proyecto> proyectos;
 
     public Empleado() {
     }
@@ -136,11 +123,11 @@ public class Empleado implements Serializable {
         this.fechaFinalizacion = fechaFinalizacion;
     }
 
-    public ArrayList<Proyecto> getProyecto() {
+    public List<Proyecto> getProyecto() {
         return proyectos;
     }
 
-    public void setProyecto(ArrayList<Proyecto> proyectos) {
+    public void setProyecto(List<Proyecto> proyectos) {
         this.proyectos = proyectos;
     }
 

@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,8 @@ public class Ejercicio5EmpleadosHibernate {
     private static final Scanner sc = new Scanner(System.in);
     
     public static void main(String[] args) {
+        Logger hibernateLogger = Logger.getLogger("org.hibernate");
+        hibernateLogger.setLevel(Level.SEVERE);
         String opc;
         do {
             opc = getMenuOption();
@@ -108,7 +111,7 @@ public class Ejercicio5EmpleadosHibernate {
         System.out.println("Escribe la fecha de contratacion: ");
         String fechaContratacion = sc.nextLine();
         
-        Empleado empleado = new Empleado(0, nombre, dni, departamento, sueldo, fechaContratacion);
+        Empleado empleado = new Empleado(null, nombre, dni, departamento, sueldo, fechaContratacion);
         EmpleadoDAO.addEmpleado(empleado);
     }
     
@@ -136,7 +139,7 @@ public class Ejercicio5EmpleadosHibernate {
     }
     
     private static void listEmpleadoActive(){
-        ArrayList<Empleado> empleados = EmpleadoDAO.listEmpleadoActive();
+        List<Empleado> empleados = EmpleadoDAO.listEmpleadoActive();
         System.out.println("Lista de empleados activos: ");
         for (Empleado e: empleados){
             System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Sueldo: "+e.getSueldo()+"Fecha de contratación: "+e.getFechaContratacion());
@@ -144,7 +147,7 @@ public class Ejercicio5EmpleadosHibernate {
     }
     
     private static void listEmpleadoDes(){
-        ArrayList<Empleado> empleados = EmpleadoDAO.listEmpleadoDes();
+        List<Empleado> empleados = EmpleadoDAO.listEmpleadoDes();
         System.out.println("Lista de empleados despedidos: ");
         for (Empleado e: empleados){
             System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Sueldo: "+e.getSueldo()+"Fecha de contratación: "+e.getFechaContratacion()+"Fecha de despido: "+e.getFechaFinalizacion());
@@ -174,7 +177,7 @@ public class Ejercicio5EmpleadosHibernate {
             Logger.getLogger(Ejercicio5EmpleadosHibernate.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        Proyecto proyecto = new Proyecto(0, nombre, fechaInicio, fechaFin);
+        Proyecto proyecto = new Proyecto(null, nombre, fechaInicio, fechaFin);
         ProyectoDAO.addProyect(proyecto);
         
     }
@@ -208,7 +211,7 @@ public class Ejercicio5EmpleadosHibernate {
         String lista = sc.nextLine();
         //Convertimos a []
         String[] empleados = lista.split(" ");
-        Proyecto proyecto = new Proyecto(0, nombre, fechaInicio, fechaFin);
+        Proyecto proyecto = new Proyecto(null, nombre, fechaInicio, fechaFin);
         
         ProyectoEmpleadoDAO.addproyectEmple(proyecto, empleados);
     }
@@ -270,11 +273,13 @@ public class Ejercicio5EmpleadosHibernate {
         System.out.println("Escribe el id del empleado: ");
         int idEmpleado = Integer.valueOf(sc.nextLine());
         
+        ProyectoEmpleadoDAO.deleteEmpleFromProyect(idProyect, idEmpleado);
+        
         
     }
     
     private static void listFututeProyect(){
-        ArrayList<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
+        List<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
         System.out.println("Lista de proyectos futuros: ");
         for (Proyecto p: proyectos){
             System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
@@ -283,7 +288,7 @@ public class Ejercicio5EmpleadosHibernate {
     }
     
     private static void listPastProyect(){
-        ArrayList<Proyecto> proyectos = ProyectoDAO.listPastProyect();
+        List<Proyecto> proyectos = ProyectoDAO.listPastProyect();
         System.out.println("Lista de proyectos futuros: ");
         for (Proyecto p: proyectos){
             System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
@@ -291,7 +296,7 @@ public class Ejercicio5EmpleadosHibernate {
     }
     
     private static void listActiveProyect(){
-        ArrayList<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
+        List<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
         System.out.println("Lista de proyectos futuros: ");
         for (Proyecto p: proyectos){
             System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
@@ -302,8 +307,9 @@ public class Ejercicio5EmpleadosHibernate {
         System.out.println("Escribe el id del proyecto: ");
         int idProyect = Integer.valueOf(sc.nextLine());
         Proyecto proyecto = ProyectoDAO.getByID(idProyect);
+        System.out.println("ID: "+proyecto.getId() + "Nombre: "+proyecto.getNombre()+" Fecha de inicio: "+proyecto.getNombre()+"Fecha de finalización: "+proyecto.getFechaFin());
         System.out.println("Lista de empleados del proyecto: ");
-        ArrayList<Empleado> empleados = proyecto.getEmpleado();
+        List<Empleado> empleados = proyecto.getEmpleado();
         for (Empleado e: empleados){
             String estado;
             if (e.getFechaFinalizacion() == null){
