@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -204,51 +205,77 @@ public class PracticaHibernate {
     
     }
     
+    
     private static void cancelBuys(){
-//        System.out.println("Escribe el id del proyecto: ");
-//        int idProyect = Integer.valueOf(sc.nextLine());
-//        //Se pide lista de empleados
-//        System.out.println("Dime por espacios una lista de ID");
-//        String lista = sc.nextLine();
-//        //Convertimos a []
-//        String[] empleados = lista.split(" ");
-//        
-//        ProyectoEmpleadoDAO.addEmplesToProyect(idProyect, empleados);
+        System.out.println("Escribe el id de la actividad: ");
+        int idActivity = Integer.valueOf(sc.nextLine());
+        System.out.println("Escribe el id del cliente: ");
+        int idClient = Integer.valueOf(sc.nextLine());
+        
+        CompraDAO.cancelBuys(idActivity, idClient);
     }
-    
+
     private static void ListAllClients(){
-        
-//        System.out.println("Escribe el id del proyecto: ");
-//        int idProyect = Integer.valueOf(sc.nextLine());
-//        System.out.println("Escribe el id del empleado: ");
-//        int idEmpleado = Integer.valueOf(sc.nextLine());
-//        
+        List<Cliente> clientes = ClienteDAO.listAllClients();
+        System.out.println("ID    |  Nombre  | Email");
+        for(Cliente c:clientes){
+            System.out.println(c.getId()+"           "+c.getNombre()+"       "+c.getEmail());
+        }
         
     }
-    
+
     private static void listFututeActivities(){
-//        ArrayList<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
-//        System.out.println("Lista de proyectos futuros: ");
-//        for (Proyecto p: proyectos){
-//            System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
-//        }
+        List<Actividad> actividades = ActividadDAO.listFutureActivities();
+        System.out.println("ID    |  Nombre              |  Fecha            |  Plazas  |  Ubicacion                     |  Nombre proveedor");
+        for(Actividad a:actividades){
+            System.out.println(a.getId()+"           "+a.getNombre()+"       "+a.getFecha()+"         "+a.getPlazasDisponibles()+"      "+a.getUbicacion()+"    "+a.getIdProveedor().getId());
+        }
         
     }
     
     private static void listDetailsClient(){
-//        ArrayList<Proyecto> proyectos = ProyectoDAO.listPastProyect();
-//        System.out.println("Lista de proyectos futuros: ");
-//        for (Proyecto p: proyectos){
-//            System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
-//        }
+        System.out.println("Escribe el id del cliente: ");
+        int id = Integer.valueOf(sc.nextLine());
+        
+        List<Cliente> clientes =ClienteDAO.listDetailsClient(id);
+        for(Cliente c: clientes){
+            System.out.println("ID: "+c.getId());
+            System.out.println("Nombre: "+c.getNombre());
+            System.out.println("Email: "+c.getEmail());
+            System.out.println("Compras realizadas");
+            System.out.println("ID Actividad | Nombre actividad | Ubicación | Nombre proveedor | Fecha actividad | Fecha compra");
+            List<Compra> compras = c.getCompraList();
+            
+            for(Compra com:compras){
+                Actividad a = com.getIdActividad();
+                Proveedor p = a.getIdProveedor();
+                System.out.println(a.getId()+"         "+a.getNombre()+"     "+a.getUbicacion()+"         "+p.getId()+"        "+a.getFecha()+"         "+com.getFechaCompra());
+            }
+        }
+        
     }
     
+    /*
+    Listar detalles de un proveedor: 
+    Se pedirá el ID del proveedor a mostrar 
+    y se mostrarán los siguientes datos:
+ID: X
+Nombre: XXXX
+Email: XXXXXXXXX
+CIF: XXXX
+
+Actividades creadas: 
+ID | Nombre | Fecha | Ubicación | Plazas disponibles
+... | ... | ... | ... | ...
+
+    
+    */
     private static void listDetailsProveedor(){
-//        ArrayList<Proyecto> proyectos = ProyectoDAO.listFutureProyect();
-//        System.out.println("Lista de proyectos futuros: ");
-//        for (Proyecto p: proyectos){
-//            System.out.println("ID: "+p.getId() + "Nombre: "+p.getNombre()+" Fecha de inicio: "+p.getNombre()+"Fecha de finalización: "+p.getFechaFin());
-//        }
+        System.out.println("Escribe el id del proveedor: ");
+        int id = Integer.valueOf(sc.nextLine());
+        
+        List<Proveedor> proveedores = ProveedorDAO.listDetailsProveedor(id);
+        //Listar
     }
     
     private static void listDetalleActivity(){

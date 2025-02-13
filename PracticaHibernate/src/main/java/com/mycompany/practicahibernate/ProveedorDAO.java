@@ -122,4 +122,12 @@ public class ProveedorDAO {
         
         return proveedor;
     }
+    
+    public static  List<Proveedor> listDetailsProveedor(int id){
+        Session session = Conexion.getSession();
+        List<Proveedor> proveedores = session.createQuery("FROM Proveedor WHERE id=:id", Proveedor.class)
+                .setParameter("id", id)
+                .getResultList();
+        return proveedores;
+    }
 }

@@ -7,6 +7,7 @@ package com.mycompany.practicahibernate;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -84,7 +85,7 @@ public class ClienteDAO {
             //Obtengo el cliente
             Cliente cliente = ClienteDAO.getById(id);
             //Ver las compras
-            List<Compra> compras = (List<Compra>) session.createQuery("FROM Compra c WHERE c.idCliente=:cliente", Compra.class).setParameter("cliente", cliente).getResultList();
+            List<Compra> compras = cliente.getCompraList();
             //Ver las actividades futuras
             List<Actividad> actividades = new ArrayList<>();
             LocalDate hoy = LocalDate.now();
@@ -120,5 +121,20 @@ public class ClienteDAO {
         }finally{
             session.close();
         }
+    }
+    
+    public static List<Cliente> listAllClients(){
+        Session session = Conexion.getSession();
+        List<Cliente> clientes = session.createQuery("FROM Cliente", Cliente.class)
+                .list();
+        return clientes;
+    }
+    
+    public static List<Cliente> listDetailsClient(int id){
+        Session session = Conexion.getSession();
+        List<Cliente> clientes = session.createQuery("FROM Cliente", Cliente.class)
+                .list();
+        
+        return clientes;
     }
 }

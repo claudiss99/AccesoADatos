@@ -4,6 +4,10 @@
  */
 package com.mycompany.practicahibernate;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -11,11 +15,7 @@ import org.hibernate.Transaction;
  *
  * @author Claudia
  */
- /*
-    Añadir actividad: Se solicitará nombre, fecha, ubicación, plazas y el cif del proveedor. 
-    Una vez creada se mostrará el ID de la actividad.
 
-    */
 public class ActividadDAO {
     public static void addActivity(Actividad actividad, String cif){
         Session session = Conexion.getSession();
@@ -31,7 +31,7 @@ public class ActividadDAO {
             //Seteamos el proveedor a la actividad
             actividad.setIdProveedor(proveedor);
             System.out.println(actividad.toString());
-            session.merge(actividad);
+            session.persist(actividad);
             transaction.commit();
             int id = actividad.getId();
             System.out.println("Se ha añadido la actividad correctamente. Su id es "+id);
@@ -71,9 +71,17 @@ public class ActividadDAO {
     }
     
     public static Actividad getById(int id){
-        Session session = Conexion.getSession();;
+        Session session = Conexion.getSession();
         return (Actividad) session.createQuery("FROM Actividad WHERE id=:id", Actividad.class).setParameter("id", id).getSingleResult();
     }
     
-    
+    public static List<Actividad> listFutureActivities(){
+        Session session = Conexion.getSession();
+        LocalDate hoy = LocalDate.now();
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String fechaFormateada = hoy.format(formato);
+        return (List<Actividad>) session.createQuery("FROM Actividad WHERE fecha>:hoy", Actividad.class)
+                .setParameter("hoy", fechaFormateada)
+                .list();
+    }
 }
