@@ -44,4 +44,36 @@ public class ActividadDAO {
             session.close();
         }
     }
+    
+     /*
+    Al borrarse una actividad se borrarán todas las compras de esta actividad.
+
+    */
+    public static void deleteActivity(int id){
+        Session session = Conexion.getSession();
+        Transaction transaction = null;
+        
+        try{
+            transaction= session.beginTransaction();
+            //Obtengo actividad 
+            Actividad actividad = ActividadDAO.getById(id);
+            session.remove(actividad);
+            transaction.commit();
+            System.out.println("Actividad eliminada con éxito");
+        }catch(Exception e){
+            System.err.println("Error al borrar actividad: "+e.getLocalizedMessage());
+            if(transaction!=null){
+                transaction.rollback();
+            }
+        }finally{
+            session.close();
+        }         
+    }
+    
+    public static Actividad getById(int id){
+        Session session = Conexion.getSession();;
+        return (Actividad) session.createQuery("FROM Actividad WHERE id=:id", Actividad.class).setParameter("id", id).getSingleResult();
+    }
+    
+    
 }

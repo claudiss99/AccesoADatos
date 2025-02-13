@@ -46,6 +46,13 @@ public class Compra implements Serializable {
     @ManyToOne
     private Actividad idActividad;
 
+    public Compra(Integer id, String fechaCompra, Cliente idCliente, Actividad idActividad) {
+        this.id = id;
+        this.fechaCompra = fechaCompra;
+        this.idCliente = idCliente;
+        this.idActividad = idActividad;
+    }
+
     public Compra() {
     }
 

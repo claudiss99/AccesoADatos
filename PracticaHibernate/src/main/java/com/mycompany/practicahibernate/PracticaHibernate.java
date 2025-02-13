@@ -147,112 +147,61 @@ public class PracticaHibernate {
         ActividadDAO.addActivity(actividad, cif);
     }
     
-    private static void deleteActivity(){
-//        ArrayList<Empleado> empleados = EmpleadoDAO.listEmpleadoDes();
-//        System.out.println("Lista de empleados despedidos: ");
-//        for (Empleado e: empleados){
-//            System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Sueldo: "+e.getSueldo()+"Fecha de contratación: "+e.getFechaContratacion()+"Fecha de despido: "+e.getFechaFinalizacion());
-//        }
-    }
+   
     
+    private static void deleteActivity(){
+        System.out.println("Introduce el ID de la actividad: ");
+        int id = Integer.valueOf(sc.nextLine());
+        
+        ActividadDAO.deleteActivity(id);
+        
+    }
+
     private static void addClient(){
         
-//        System.out.println("Escribe el nombre: ");
-//        String nombre = sc.nextLine();
-//        System.out.println("Escribe la fecha de inicio: ");
-//        String fechaInicio = sc.nextLine();
-//        System.out.println("Escribe la fecha de fin: ");
-//        String fechaFin = sc.nextLine();
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
-//   
-//        try {
-//            Date fecha1 = format.parse(fechaInicio);
-//            Date fecha2 = format.parse(fechaFin); 
-//            while (fecha1.after(fecha2)){
-//                System.out.println("Escribe la fecha de inicio: ");
-//                fechaInicio = sc.nextLine();
-//                System.out.println("Escribe la fecha de fin: ");
-//                fechaFin = sc.nextLine();
-//            }
-//        } catch (ParseException ex) {
-//            Logger.getLogger(Ejercicio5EmpleadosHibernate.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        Proyecto proyecto = new Proyecto(0, nombre, fechaInicio, fechaFin);
-//        ProyectoDAO.addProyect(proyecto);
+        System.out.println("Escribe el nombre: ");
+        String nombre = sc.nextLine();
+        System.out.println("Escribe el email: ");
+        String email = sc.nextLine();
+        
+        Cliente cliente = new Cliente(null, nombre, email);
+        ClienteDAO.addClient(cliente);
         
     }
     
     private static void updateClient(){
         
-//        //Pedir datos del proyecto y comprobamos la fecha
-//        System.out.println("Escribe el nombre: ");
-//        String nombre = sc.nextLine();
-//        System.out.println("Escribe la fecha de inicio: ");
-//        String fechaInicio = sc.nextLine();
-//        System.out.println("Escribe la fecha de fin: ");
-//        String fechaFin = sc.nextLine();
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
-//   
-//        try {
-//            Date fecha1 = format.parse(fechaInicio);
-//            Date fecha2 = format.parse(fechaFin); 
-//            while (fecha1.after(fecha2)){
-//                System.out.println("Escribe la fecha de inicio: ");
-//                fechaInicio = sc.nextLine();
-//                System.out.println("Escribe la fecha de fin: ");
-//                fechaFin = sc.nextLine();
-//            }
-//        } catch (ParseException ex) {
-//            Logger.getLogger(Ejercicio5EmpleadosHibernate.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        //Se pide lista de empleados
-//        System.out.println("Dime por espacios una lista de ID");
-//        String lista = sc.nextLine();
-//        //Convertimos a []
-//        String[] empleados = lista.split(" ");
-//        Proyecto proyecto = new Proyecto(0, nombre, fechaInicio, fechaFin);
-//        
-//        ProyectoEmpleadoDAO.addproyectEmple(proyecto, empleados);
-    }
-    
-    private static void deleteClient(){
-//        System.out.println("Escribe el id: ");
-//        int id = Integer.valueOf(sc.nextLine());
-//        System.out.println("Escribe el nombre: ");
-//        String nombre = sc.nextLine();
-//        System.out.println("Escribe la fecha de inicio: ");
-//        String fechaInicio = sc.nextLine();
-//        System.out.println("Escribe la fecha de fin: ");
-//        String fechaFin = sc.nextLine();
-//        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
-//   
-//        try {
-//            Date fecha1 = format.parse(fechaInicio);
-//            Date fecha2 = format.parse(fechaFin); 
-//            while (fecha1.after(fecha2)){
-//                System.out.println("Escribe la fecha de inicio: ");
-//                fechaInicio = sc.nextLine();
-//                System.out.println("Escribe la fecha de fin: ");
-//                fechaFin = sc.nextLine();
-//            }
-//        } catch (ParseException ex) {
-//            Logger.getLogger(Ejercicio5EmpleadosHibernate.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        ProyectoDAO.updateProyect(id, nombre, fechaInicio, fechaFin);
+        System.out.println("Escribe el id: ");
+        int id = Integer.valueOf(sc.nextLine());
+        System.out.println("Escribe el nombre: ");
+        String nombre = sc.nextLine();
+        System.out.println("Escribe el email: ");
+        String email = sc.nextLine();
+        
+        ClienteDAO.updateClient(id, nombre, email);
         
     }
+    
+    
+    private static void deleteClient(){
+        
+        System.out.println("Escribe el id: ");
+        int id = Integer.valueOf(sc.nextLine());
+        
+        ClienteDAO.deleteClient(id);
+    }
+    
     
     private static void buyActivity(){
         
-//        System.out.println("Escribe el id del proyecto: ");
-//        int idProyect = Integer.valueOf(sc.nextLine());
-//        System.out.println("Escribe el id del empleado: ");
-//        int idEmpleado = Integer.valueOf(sc.nextLine());
-//        
-//        ProyectoEmpleadoDAO.addEmpleToProyect(idProyect, idEmpleado);
+        System.out.println("Escribe el id de la actividad: ");
+        int idActivity = Integer.valueOf(sc.nextLine());
+        System.out.println("Escribe el id del cliente: ");
+        int idClient = Integer.valueOf(sc.nextLine());
+        
+        CompraDAO.buyActivity(idActivity, idClient);
+        
+    
     }
     
     private static void cancelBuys(){
