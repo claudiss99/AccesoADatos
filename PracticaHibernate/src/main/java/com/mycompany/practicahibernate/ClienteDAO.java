@@ -67,15 +67,6 @@ public class ClienteDAO {
         return (Cliente) session.createQuery("FROM Cliente WHERE id=:id", Cliente.class).setParameter("id", id).getSingleResult();
     }
     
-    
-    /*
-    
-    Borrar cliente: Se pedirá el ID del cliente que se quiera borrar. 
-    Al borrarse un cliente se borrarán todas las compras que haya realizado. 
-    Un cliente no podrá borrarse si ha realizado una compra de una actividad 
-    que aún no haya realizado (con fecha futura).
-*/
-    
     public static void deleteClient(int id){
         Session session = Conexion.getSession();
         Transaction transaction = null;
@@ -88,15 +79,11 @@ public class ClienteDAO {
             List<Compra> compras = cliente.getCompraList();
             //Ver las actividades futuras
             List<Actividad> actividades = new ArrayList<>();
-            LocalDate hoy = LocalDate.now();
-            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            String fechaFormateada = hoy.format(formato);
             for (Compra c:compras){
                 Actividad actividad = c.getIdActividad();
                 int idActivity = actividad.getId();
-                List<Actividad> ac = session.createQuery("FROM Actividad WHERE id=:idActivity AND fecha>:fechaFormateada", Actividad.class)
+                List<Actividad> ac = session.createQuery("FROM Actividad WHERE id=:idActivity AND fecha>CURRENT_DATE", Actividad.class)
                         .setParameter("idActivity", idActivity)
-                        .setParameter("fechaFormateada", fechaFormateada)
                         .getResultList();
                 if (!ac.isEmpty()){
                     for (Actividad a: ac){

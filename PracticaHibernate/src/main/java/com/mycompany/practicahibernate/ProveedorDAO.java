@@ -70,9 +70,6 @@ public class ProveedorDAO {
         
         Session session = Conexion.getSession();
         Transaction transaction = null;
-        LocalDate hoy = LocalDate.now();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        String fechaFormateada = hoy.format(formato);
         
         try{
             
@@ -80,9 +77,8 @@ public class ProveedorDAO {
 
             Proveedor proveedor = ProveedorDAO.getByID(id);
             //Comprobar si tiene actividades con fecha futura
-            List<Actividad> actividades = session.createQuery("FROM Actividad WHERE idProveedor =:id AND fecha>:fechaFormateada", Actividad.class)
+            List<Actividad> actividades = session.createQuery("FROM Actividad WHERE idProveedor =:id AND fecha>CURRENT_DATE", Actividad.class)
                 .setParameter("id", proveedor)
-                .setParameter("fechaFormateada", fechaFormateada)
                 .getResultList();
         
             transaction = session.beginTransaction();

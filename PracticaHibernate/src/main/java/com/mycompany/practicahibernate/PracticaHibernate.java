@@ -133,19 +133,24 @@ public class PracticaHibernate {
     }
    
     private static void addActivity(){
-        System.out.println("Dame el nombre");
-        String nombre = sc.nextLine();
-        System.out.println("Dame la fecha");
-        String fecha = sc.nextLine();
-        System.out.println("Dame la ubicación");
-        String ubicacion = sc.nextLine();
-        System.out.println("Dame las plazas");
-        int plazas = Integer.valueOf(sc.nextLine());
-        System.out.println("Dame el cif del proveedor");
-        String cif = sc.nextLine();
-        
-        Actividad actividad = new Actividad(nombre, fecha, ubicacion, plazas);
-        ActividadDAO.addActivity(actividad, cif);
+        try {
+            System.out.println("Dame el nombre");
+            String nombre = sc.nextLine();
+            System.out.println("Dame la fecha");
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            Date fecha = formato.parse(sc.nextLine());
+            System.out.println("Dame la ubicación");
+            String ubicacion = sc.nextLine();
+            System.out.println("Dame las plazas");
+            int plazas = Integer.valueOf(sc.nextLine());
+            System.out.println("Dame el cif del proveedor");
+            String cif = sc.nextLine();
+            
+            Actividad actividad = new Actividad(nombre, fecha, ubicacion, plazas);
+            ActividadDAO.addActivity(actividad, cif);
+        } catch (ParseException ex) {
+            Logger.getLogger(PracticaHibernate.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
    
@@ -254,45 +259,64 @@ public class PracticaHibernate {
         }
         
     }
-    
-    /*
-    Listar detalles de un proveedor: 
-    Se pedirá el ID del proveedor a mostrar 
-    y se mostrarán los siguientes datos:
-ID: X
-Nombre: XXXX
-Email: XXXXXXXXX
-CIF: XXXX
 
-Actividades creadas: 
-ID | Nombre | Fecha | Ubicación | Plazas disponibles
-... | ... | ... | ... | ...
-
-    
-    */
     private static void listDetailsProveedor(){
         System.out.println("Escribe el id del proveedor: ");
         int id = Integer.valueOf(sc.nextLine());
         
         List<Proveedor> proveedores = ProveedorDAO.listDetailsProveedor(id);
-        //Listar
+        //Listar proveedor
+        for(Proveedor p:proveedores){
+            System.out.println("ID: "+p.getId());
+            System.out.println("Nombre: "+p.getNombre());
+            System.out.println("Email: "+p.getEmail());
+            System.out.println("CIF: "+p.getEmail());
+            List<Actividad> actividades = p.getActividadList();
+            System.out.println("ID | Nombre | Fecha | Ubicación | Plazas disponibles");
+            for(Actividad a:actividades){
+                System.out.println(a.getId()+"|"+a.getNombre()+"|"+a.getFecha()+"|"+a.getUbicacion()+"|"+a.getPlazasDisponibles());
+            }
+        }
     }
     
+    /*
+    Listar detalles de una actividad: 
+    Se pedirá el ID de la actividad a mostrar 
+    y se mostrarán los siguientes datos:
+ID: X
+Nombre: XXXX
+Fecha: XX/XX/XXXX
+Ubicación: XXXXXXXX
+Plazas disponibles: X
+ID Proveedor: X
+Nombre proveedor: XXXX
+
+Clientes:
+ID | Nombre | Email | Fecha compra
+... | ... | ... | ... 
+
+    */
     private static void listDetalleActivity(){
-//        System.out.println("Escribe el id del proyecto: ");
-//        int idProyect = Integer.valueOf(sc.nextLine());
-//        Proyecto proyecto = ProyectoDAO.getByID(idProyect);
-//        System.out.println("Lista de empleados del proyecto: ");
-//        ArrayList<Empleado> empleados = proyecto.getEmpleado();
-//        for (Empleado e: empleados){
-//            String estado;
-//            if (e.getFechaFinalizacion() == null){
-//                estado = "Activo";
-//            }else{
-//                estado= "Inactivo";
-//            }
-//            System.out.println("ID: "+e.getId() + "Nombre: "+e.getNombre()+"DNI: "+e.getDni()+" Departamento: "+e.getDepartamento()+" Estado: "+estado);
-//        }
+
+        System.out.println("Escribe el id de la actividad: ");
+        int id = Integer.valueOf(sc.nextLine());
         
+        List<Actividad> actividades = ActividadDAO.listDetalleActivity(id);
+        for(Actividad a: actividades){
+            System.out.println("ID: "+a.getId());
+            System.out.println("Nombre: "+a.getNombre());
+            System.out.println("Fecha: "+a.getFecha());
+            System.out.println("Ubicacion: "+a.getUbicacion());
+            System.out.println("Plazas Disponibles: "+a.getPlazasDisponibles());
+            System.out.println("ID Proveedor: "+a.getIdProveedor());
+            System.out.println("Nombre Proveedor: "+a.getIdProveedor().getNombre());
+            
+            System.out.println("ID | Nombre | Email | Fecha compra");
+            List<Compra> compras = a.getCompraList();
+            for(Compra c:compras){
+                System.out.println(c.getIdCliente()+"|"+c.getIdCliente().getNombre()+"|"+c.getIdCliente().getEmail()+"|"+c.getFechaCompra());
+            }
+            
+        }
     }
 }
