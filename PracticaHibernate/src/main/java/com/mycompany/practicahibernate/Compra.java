@@ -38,7 +38,7 @@ public class Compra implements Serializable {
     private Integer id;
     @Column(name = "fecha_compra")
     @Temporal(TemporalType.TIMESTAMP)
-    private String fechaCompra;
+    private Date fechaCompra;
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")
     @ManyToOne
     private Cliente idCliente;
@@ -46,7 +46,7 @@ public class Compra implements Serializable {
     @ManyToOne
     private Actividad idActividad;
 
-    public Compra(Integer id, String fechaCompra, Cliente idCliente, Actividad idActividad) {
+    public Compra(Integer id, Date fechaCompra, Cliente idCliente, Actividad idActividad) {
         this.id = id;
         this.fechaCompra = fechaCompra;
         this.idCliente = idCliente;
@@ -68,11 +68,11 @@ public class Compra implements Serializable {
         this.id = id;
     }
 
-    public String getFechaCompra() {
+    public Date getFechaCompra() {
         return fechaCompra;
     }
 
-    public void setFechaCompra(String fechaCompra) {
+    public void setFechaCompra(Date fechaCompra) {
         this.fechaCompra = fechaCompra;
     }
 

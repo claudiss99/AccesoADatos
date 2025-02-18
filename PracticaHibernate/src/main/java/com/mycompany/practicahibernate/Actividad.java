@@ -47,7 +47,7 @@ public class Actividad implements Serializable {
     @Basic(optional = false)
     @Column(name = "fecha")
     @Temporal(TemporalType.DATE)
-    private String fecha;
+    private Date fecha;
     @Basic(optional = false)
     @Column(name = "ubicacion")
     private String ubicacion;
@@ -69,7 +69,7 @@ public class Actividad implements Serializable {
         this.id = id;
     }
 
-    public Actividad(Integer id, String nombre, String fecha, String ubicacion, int plazasDisponibles) {
+    public Actividad(Integer id, String nombre, Date fecha, String ubicacion, int plazasDisponibles) {
         this.id = id;
         this.nombre = nombre;
         this.fecha = fecha;
@@ -77,7 +77,7 @@ public class Actividad implements Serializable {
         this.plazasDisponibles = plazasDisponibles;
     }
 
-    public Actividad(String nombre, String fecha, String ubicacion, int plazasDisponibles) {
+    public Actividad(String nombre, Date fecha, String ubicacion, int plazasDisponibles) {
         this.nombre = nombre;
         this.fecha = fecha;
         this.ubicacion = ubicacion;
@@ -100,11 +100,11 @@ public class Actividad implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 

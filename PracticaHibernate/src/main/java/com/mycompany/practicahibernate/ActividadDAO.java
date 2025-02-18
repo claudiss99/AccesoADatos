@@ -45,10 +45,6 @@ public class ActividadDAO {
         }
     }
     
-     /*
-    Al borrarse una actividad se borrarán todas las compras de esta actividad.
-
-    */
     public static void deleteActivity(int id){
         Session session = Conexion.getSession();
         Transaction transaction = null;
@@ -77,11 +73,12 @@ public class ActividadDAO {
     
     public static List<Actividad> listFutureActivities(){
         Session session = Conexion.getSession();
-        LocalDate hoy = LocalDate.now();
-        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-        String fechaFormateada = hoy.format(formato);
-        return (List<Actividad>) session.createQuery("FROM Actividad WHERE fecha>:hoy", Actividad.class)
-                .setParameter("hoy", fechaFormateada)
+        return (List<Actividad>) session.createQuery("FROM Actividad WHERE fecha>CURRENT_DATE", Actividad.class)
                 .list();
+    }
+    
+    public static List<Actividad> listDetalleActivity(int id){
+        Session session= Conexion.getSession();
+        return (List<Actividad>) session.createQuery("FROM Actividad WHERE id=:id", Actividad.class).setParameter("id", id).list();
     }
 }
