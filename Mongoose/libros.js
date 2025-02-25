@@ -10,8 +10,6 @@ app.listen(PORT, () => {
   console.log('Servidor corriendo en el puerto ${PORT}');
 });
 
-
-
 //Crear un libro
 app.post('/libros', (req, res) => {
     const libro = req.body;
@@ -23,13 +21,9 @@ app.post('/libros', (req, res) => {
 
 //Modificar un libro
 app.put('/libros/:id', (req, res) => {
-  const body = req.body;
-  Libro.findByIdAndUpdate(req.params.id, {
-    titulo: body.titulo,
-    autor: body.Autor,
-    year: body.year,
-    editorial: body.editorial
-  })
+  Libro.findByIdAndUpdate(req.params.id, 
+    req.body
+  )
   .then((libro) => res.send('Libro actualizado correctamente'))
   .catch((err) => res.send('Error al actualizar el libro '+err))
 });
@@ -57,9 +51,9 @@ app.get('/libros/:id', (req, res) => {
 });
 
 //Consultar libro por fragmento
-app.get('/libros/fragmento', (req, res) => {
+app.get('/libros/:fragmento', (req, res) => {
   const fragmento = req.query.fragmento;
-  const regex = new RegExp(fragmento, 'i'):
+  const regex = new RegExp(fragmento, 'i');
   Libro.find({titulo: {$regex:regex}})
   .then((libros) => res.send(libros))
   .catch((err) => res.send('Error consultar por fragmento: ',err))
