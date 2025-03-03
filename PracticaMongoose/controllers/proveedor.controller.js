@@ -1,4 +1,6 @@
-const Proveedor = require('.../models/proveedor.model');
+const Proveedor = require('../models/proveedor.model');
+const Actividad = require('../models/actividad.model');
+
 
 let ProveedorController = {};
 
@@ -46,14 +48,18 @@ ProveedorController.deleteProveedor = async (req, res) => {
 };
 
 //Consulta 14
-ProveedorController.getDetailsProveedor() = async (req, res) => {
+ProveedorController.getDetailsProveedor = async (req, res) => {
     try{
         const {id} = req.params;
         const proveedor = await Proveedor.findById(id);
         if(!proveedor){
             return res.status(404).json({message: 'Proveedor no encontrado'});
         }
-        res.json(proveedor);
+
+        const actividades = await Actividad.find({id_proveedor: id});
+
+
+        res.json({proveedor, actividades});
     }catch(error){
         res.status(400).json({error: error.message});
     }

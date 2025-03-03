@@ -1,4 +1,5 @@
-const Cliente = require('.../models/cliente.model');
+const Cliente = require('../models/cliente.model');
+const Compra = require('../models/compra.model');
 
 let ClienteController = {};
 
@@ -50,12 +51,10 @@ ClienteController.deleteCliente = async(req, res) => {
     }catch(error){
         res.status(400).json({error: error.message})
     }
-
-    
 }
 
-//Ejercicio 11
-ClienteController.getAllClient() =async (req, res) =>{
+//Consulta 11
+ClienteController.getAllClient =async (req, res) =>{
     try{
         const clientes = await Cliente.find();
         res.json(clientes);
@@ -64,15 +63,16 @@ ClienteController.getAllClient() =async (req, res) =>{
     }
 }
 
-//Ejercicio 13
-ClienteController.getDetailsClient() =async (req, res) => {
+//Consulta 13
+ClienteController.getDetailsClient =async (req, res) => {
     try{
         const {id} = req.params;
         const cliente = await Cliente.findById(id);
         if(!cliente){
             return res.status(404).json({message: 'Clientte no encontrado'});
         }
-        res.json(cliente);
+        const compras = await Compra.find({ id_cliente: id });
+        res.json({cliente, compras});
     }catch(error){
         res.status(400).json({error: error.message});
     }

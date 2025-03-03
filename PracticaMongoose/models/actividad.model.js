@@ -5,7 +5,7 @@ const ActividadSchema = new mongoose.Schema({
     fecha: {type:Date, required:true},
     ubicacion: {type:String, required:true},
     plazas_disponibles: { type: Number, required:true},
-    id_proveedor: {type: mongoose.Schema.Types.ObjectId, ref: 'Actividad'}
+    id_proveedor: {type: mongoose.Schema.Types.ObjectId, ref: 'Proveedor'}
 })
 
 module.exports = mongoose.model('Actividad', ActividadSchema, 'actividades')

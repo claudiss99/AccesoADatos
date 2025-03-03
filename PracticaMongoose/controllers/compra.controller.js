@@ -1,4 +1,6 @@
-const Compra = require('.../models/compra.model');
+const Compra = require('../models/compra.model');
+const Actividad = require('../models/actividad.model')
+const Cliente = require('../models/cliente.model')
 const { json } = require('express');
 
 let CompraController = {};
@@ -7,7 +9,7 @@ let CompraController = {};
 CompraController.buyActivity = async (req, res) => {
     try{
         const {idActivity, idClient} = req.body;
-        const cliente = await ClienteController.findById(idClient);
+        const cliente = await Cliente.findById(idClient);
         const actividad = await Actividad.findById(idActivity);
         if(!cliente || !actividad){
             return res.status(404).json({message: 'Cliente o actividad no encontrada'});

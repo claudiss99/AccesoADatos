@@ -1,4 +1,6 @@
-const Actividad = require('.../models/actividad.model');
+const Actividad = require('../models/actividad.model');
+const Proveedor = require('../models/proveedor.model');
+const Cliente = require('../models/cliente.model')
 
 let ActividadController = {};
 
@@ -6,7 +8,7 @@ let ActividadController = {};
 ActividadController.addActividad = async(req, res) => {
     try{
         const{cif} = req.body;
-        const proveedor = await ProveedorController.findOne({cif});
+        const proveedor = await Proveedor.findOne({cif});
         if(!proveedor){
             return res.status(404).json({message: 'Proveedor no encontrado'});
         }
@@ -51,10 +53,13 @@ ActividadController.getDetailsActivity = async (req, res) => {
         if(!actividad){
             return res.status(404).json({message: 'Actividad no encontrada'});
         }
-        res.json(actividad);
+
+        const clientes = await Cliente.find({id_actividad: id})
+
+        res.json({actividad, clientes});
     }catch(error){
         res.status(400).json({error: error.message});
     }
 };
 
-module.exports = ProveedorController;
+module.exports = ActividadController;
