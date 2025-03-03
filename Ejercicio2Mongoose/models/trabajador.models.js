@@ -9,5 +9,5 @@ const trabajadorSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('Trabajador', trabajadorSchema);
+module.exports = mongoose.model('Trabajador', trabajadorSchema, 'trabajadores');
 
