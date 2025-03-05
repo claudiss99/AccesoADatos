@@ -38,7 +38,7 @@ ActividadController.deleteActivity = async (req, res) => {
 //Consulta 12
 ActividadController.getFutureActivities = async (req, res) => {
     try{
-        const actividades = await Actividad.find({fecha: {$gt: new Date()}});
+        const actividades = await Actividad.find({fecha: {$gt: new Date()}}).populate("id_proveedor");
         res.json(actividades);
     }catch(error){
         res.status(400).json({error: error.message});
